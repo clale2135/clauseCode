@@ -1,42 +1,27 @@
-// API keys - store in chrome storage or set them in popup before use
-let OPENAI_API_KEY = localStorage.getItem('OPENAI_API_KEY') || '';
-let SERPAPI_KEY = localStorage.getItem('SERPAPI_KEY') || '';
+// API calls go through backend server
+const SERVER_URL = 'http://localhost:5001';
 
-// Last analysis state (used for saving to Sheets)
+// Last analysis state
 let lastResultText = "";
 let lastPageData = null;
 let lastAgent = "";
 let lastAnalysisType = "";
 
 async function searchAlternatives(serviceName) {
-  if (!SERPAPI_KEY || SERPAPI_KEY === "YOUR_SERPAPI_KEY_HERE") {
-    throw new Error("SerpAPI key not configured");
-  }
-
-  const query = `alternatives to ${serviceName}`;
-  const url = `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&api_key=${SERPAPI_KEY}`;
-
   try {
-    const response = await fetch(url);
-    
+    const response = await fetch(`${SERVER_URL}/search-alternatives`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ serviceName })
+    });
+
     if (!response.ok) {
-      throw new Error(`SerpAPI error: ${response.statusText}`);
+      const err = await response.json();
+      throw new Error(err.error || response.statusText);
     }
 
     const data = await response.json();
-    
-    const alternatives = [];
-    if (data.organic_results) {
-      data.organic_results.slice(0, 5).forEach(result => {
-        alternatives.push({
-          title: result.title,
-          link: result.link,
-          snippet: result.snippet
-        });
-      });
-    }
-
-    return alternatives;
+    return data.alternatives || [];
   } catch (error) {
     throw new Error(`Failed to fetch alternatives: ${error.message}`);
   }
@@ -119,28 +104,22 @@ function displayAlternatives(alternatives) {
   section.style.display = "block";
 }
 async function callAI(pageText, systemPrompt) {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${OPENAI_API_KEY}`
-    },
+  const response = await fetch(`${SERVER_URL}/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: `PAGE CONTENT:\n${pageText}\n\nAnalyze this page content according to your role and provide your insights.` }
-      ]
+      pageText,
+      systemPrompt
     })
   });
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error?.message || response.statusText); 
+    throw new Error(errorData.error || response.statusText);
   }
 
   const data = await response.json();
-  return data.choices[0].message.content;
+  return data.result;
 }
 
 function getAgentEmoji(agentName) {

@@ -5,3 +5,6 @@ __pycache__/
 *.pyc
 .env
 node_modules/
+
+localStorage.setItem('OPENAI_API_KEY', 'sk-proj-bYtkeiG8mv9W623t9LchT3BlbkFJfbbxVoEf7sZHopKOyjIq);
+localStorage.setItem('SERPAPI_KEY', 'a5e67e2ac811a86ebd77129fbe22a49280935b728f4ef37a58f8b080ee0373ed');

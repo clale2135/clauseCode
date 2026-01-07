@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
 """
 Simple Flask server that accepts POST requests from the Chrome extension
-and appends analysis results to a CSV file.
+and makes API calls to OpenAI and SerpAPI using credentials from .env
 """
 
 from flask import Flask, request, jsonify
 import csv
 import os
 from datetime import datetime
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
 
 app = Flask(__name__)
+
+# Get API keys from .env
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+SERPAPI_KEY = os.getenv('SERPAPI_KEY', '')
 
 # CSV file path in the chrome_extension folder
 CSV_FILE = os.path.join(os.path.dirname(__file__), 'analysis_data.csv')
@@ -60,6 +69,82 @@ def home():
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok', 'message': 'Server is running'}), 200
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    """Analyze page content using AI"""
+    try:
+        if not OPENAI_API_KEY:
+            return jsonify({'error': 'OpenAI API key not configured in .env'}), 500
+
+        data = request.get_json()
+        page_text = data.get('pageText', '')
+        system_prompt = data.get('systemPrompt', '')
+
+        # Call OpenAI API
+        response = requests.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {OPENAI_API_KEY}'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': f'PAGE CONTENT:\n{page_text}\n\nAnalyze this page content according to your role and provide your insights.'}
+                ]
+            }
+        )
+
+        if not response.ok:
+            error_data = response.json()
+            return jsonify({'error': error_data.get('error', {}).get('message', 'OpenAI API error')}), 400
+
+        result = response.json()
+        return jsonify({'result': result['choices'][0]['message']['content']}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/search-alternatives', methods=['POST'])
+def search_alternatives():
+    """Search for alternative services"""
+    try:
+        if not SERPAPI_KEY:
+            return jsonify({'error': 'SerpAPI key not configured in .env'}), 500
+
+        data = request.get_json()
+        service_name = data.get('serviceName', '')
+
+        query = f'alternatives to {service_name}'
+        response = requests.get(
+            'https://serpapi.com/search.json',
+            params={
+                'engine': 'google',
+                'q': query,
+                'api_key': SERPAPI_KEY
+            }
+        )
+
+        if not response.ok:
+            return jsonify({'error': 'SerpAPI error'}), 400
+
+        data = response.json()
+        alternatives = []
+        
+        if data.get('organic_results'):
+            for result in data['organic_results'][:5]:
+                alternatives.append({
+                    'title': result.get('title'),
+                    'link': result.get('link'),
+                    'snippet': result.get('snippet')
+                })
+
+        return jsonify({'alternatives': alternatives}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     init_csv()
