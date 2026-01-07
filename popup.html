@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { 
+      font-family: "TT Chocolates", sans-serif; 
+      width: 600px; 
+      margin: 0; 
+      padding: 10px; 
+      background-color: #f1f2ffec; 
+      color: #393536; 
+    }
+    h3 { 
+      color: #393536; 
+      margin-top: 0; 
+      font-size: 24px; 
+      text-align: center; 
+    }
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+    textarea { 
+      width: 100%; 
+      height: 80px; 
+      box-sizing: border-box; 
+      border: 1px solid #393536; 
+      padding: 8px; 
+      border-radius: 4px; 
+      font-family: "TT Chocolates", sans-serif; 
+      color: #393536; 
+    }
+    button { 
+      width: 100%; 
+      margin-top: 10px; 
+      padding: 8px; 
+      background-color: #38b6ff; 
+      color: #ffffff; 
+      border: none; 
+      border-radius: 4px; 
+      font-weight: bold; 
+      cursor: pointer; 
+    }
+    button:hover { 
+      background-color: #2a9de6; 
+    }
+    select { 
+      width: 100%; 
+      padding: 12px; 
+      box-sizing: border-box; 
+      margin-top: 8px; 
+      border: 2px solid #38b6ff; 
+      border-radius: 8px; 
+      background-color: #ffffff; 
+      color: #393536; 
+      font-family: "TT Chocolates", sans-serif; 
+      font-size: 15px; 
+      cursor: pointer; 
+      transition: all 0.2s;
+    }
+    select:hover {
+      border-color: #2a9de6;
+      box-shadow: 0 2px 4px rgba(56, 182, 255, 0.2);
+    }
+    select:focus {
+      outline: none;
+      border-color: #38b6ff;
+      box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.1);
+    }
+    label { 
+      display: block; 
+      margin-top: 15px; 
+      font-weight: bold; 
+      color: #393536; 
+      font-size: 16px; 
+    }
+    .help-text {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 5px;
+      font-style: italic;
+    }
+    .split-container { 
+      display: flex; 
+      gap: 10px; 
+      margin-top: 15px; 
+    }
+    .answer-panel { 
+      flex: 1; 
+      border: 2px solid #38b6ff; 
+      border-left: 6px solid #38b6ff; 
+      padding: 0; 
+      border-radius: 12px; 
+      min-height: 250px; 
+      background-color: #ffffff; 
+      overflow: hidden; 
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .answer-panel h4 { 
+      margin: 0; 
+      padding: 15px; 
+      color: #393536; 
+      border-bottom: 2px solid #e5e7eb; 
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .answer-content { 
+      padding: 15px; 
+      white-space: pre-wrap; 
+      word-wrap: break-word; 
+      color: #393536; 
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .thinking {
+      text-align: center;
+      color: #64748b;
+      font-style: italic;
+      padding: 20px;
+    }
+    
+    /* Agent color coding */
+    .answer-panel.agent-regular { 
+      border-left-color: #64748b; 
+    }
+    .answer-panel.agent-regular h4 { 
+      background: linear-gradient(to right, #64748b15, transparent); 
+      border-left: 3px solid #64748b; 
+    }
+    
+    .answer-panel.agent-lawyer { 
+      border-left-color: #1e7e34; 
+    }
+    .answer-panel.agent-lawyer h4 { 
+      background: linear-gradient(to right, #1e7e3415, transparent); 
+      border-left: 3px solid #1e7e34; 
+    }
+    
+    .answer-panel.agent-ceo { 
+      border-left-color: #6366f1; 
+    }
+    .answer-panel.agent-ceo h4 { 
+      background: linear-gradient(to right, #6366f115, transparent); 
+      border-left: 3px solid #6366f1; 
+    }
+    
+    .answer-panel.agent-bob { 
+      border-left-color: #f97316; 
+    }
+    .answer-panel.agent-bob h4 { 
+      background: linear-gradient(to right, #f9731615, transparent); 
+      border-left: 3px solid #f97316; 
+    }
+    
+    .answer-panel.agent-brainrot { 
+      border-left-color: #ccff00; 
+    }
+    .answer-panel.agent-brainrot h4 { 
+      background: linear-gradient(to right, #ccff0015, transparent); 
+      border-left: 3px solid #ccff00; 
+    }
+    .alternatives-section { 
+      margin-top: 15px; 
+      border: 1px solid #38b6ff; 
+      padding: 10px; 
+      border-radius: 4px; 
+      background-color: #ffffff; 
+    }
+    .alternatives-section h4 { 
+      margin-top: 0; 
+      color: #393536; 
+    }
+    .alternative-item { 
+      margin-bottom: 10px; 
+      padding: 8px; 
+      background-color: #ffffff; 
+      border: 1px solid #393536; 
+      border-radius: 4px; 
+    }
+    .alternative-item a { 
+      color: #38b6ff; 
+      text-decoration: none; 
+      font-weight: bold; 
+    }
+    .alternative-item a:hover { 
+      text-decoration: underline; 
+      color: #2a9de6; 
+    }
+    .alternative-snippet { 
+      color: #393536; 
+      font-size: 0.9em; 
+      margin-top: 4px; 
+    }
+  </style>
+</head>
+<body>
+
+  <h3>Understand This Page</h3>
+  <p class="subtitle">Pick a helper to explain what you're reading!</p>
+  
+  <label for="agentSelector">Choose Your Helper:</label>
+  <select id="agentSelector">
+    <option value="">Pick a helper...</option>
+    <option value="Regular">Regular Helper - Simple & Clear</option>
+    <option value="Bob">Bob - Wild & Fun</option>
+    <option value="Lawyer">Lawyer - Legal Expert</option>
+    <option value="CEO">CEO - Business Smart</option>
+    <option value="brainrot">brainrot - Super Fun & Energetic</option>
+  </select>
+  <p class="help-text" id="agentHelp" style="display: none;">Each helper explains things differently!</p>
+
+  <label for="analysisTypeSelector" id="analysisTypeLabel" style="display: none;">What Do You Want to Know?</label>
+  <select id="analysisTypeSelector" style="display: none;">
+    <option value="">Pick what you want to learn...</option>
+    <option value="malicious">Scary Parts - What's Bad?</option>
+    <option value="summary">Simple Summary - In Plain English</option>
+    <option value="proscons">Good & Bad - Pros and Cons</option>
+    <option value="recommendation">Should I Use This? - Recommendation</option>
+    <option value="alternatives">Other Options - Alternative Services</option>
+  </select>
+  <p class="help-text" id="analysisHelp" style="display: none;">Choose what you want to learn about this page!</p>
+
+  <div class="answer-panel" style="margin-top: 20px;">
+    <h4 id="agentTitle">Pick a helper above to get started!</h4>
+    <div id="answerContent" class="answer-content"></div>
+  </div>
+
+  <div id="alternativesSection" class="alternatives-section" style="display: none;">
+    <h4>Other Options You Might Like</h4>
+    <div id="alternativesList"></div>
+  </div>
+
+  <div style="margin-top:12px; border-top:1px dashed #e5e7eb; padding-top:12px;">
+    <button id="saveToCsvBtn" style="margin-top:10px;">Save Result To CSV (Local Server)</button>
+    <p class="help-text">Make sure Python server is running: <code>cd chrome_extension && source venv/bin/activate && python3 server.py</code></p>
+    <div id="saveStatus" style="margin-top:8px; font-size:13px; color:#374151;"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
