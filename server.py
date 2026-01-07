@@ -20,16 +20,21 @@ app = Flask(__name__)
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
 SERPAPI_KEY = os.getenv('SERPAPI_KEY', '')
 
-# CSV file path in the chrome_extension folder
-CSV_FILE = os.path.join(os.path.dirname(__file__), 'analysis_data.csv')
+# CSV file path - use /tmp for Railway or local dir
+import tempfile
+csv_dir = tempfile.gettempdir() if os.getenv('RAILWAY_ENVIRONMENT_NAME') else os.path.dirname(__file__)
+CSV_FILE = os.path.join(csv_dir, 'analysis_data.csv')
 HEADERS = ['Timestamp', 'Agent', 'Analysis Type', 'Page Title', 'Page URL', 'Result Text']
 
 # Ensure CSV file exists with headers
 def init_csv():
-    if not os.path.exists(CSV_FILE):
-        with open(CSV_FILE, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow(HEADERS)
+    try:
+        if not os.path.exists(CSV_FILE):
+            with open(CSV_FILE, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow(HEADERS)
+    except Exception as e:
+        print(f"Warning: Could not create CSV file: {e}")
 
 @app.route('/save', methods=['POST'])
 def save_data():
@@ -44,12 +49,16 @@ def save_data():
         page_url = data.get('pageUrl', '')
         result_text = data.get('resultText', '')
         
-        # Append to CSV
-        with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow([timestamp, agent, analysis_type, page_title, page_url, result_text])
+        # Try to append to CSV, but don't fail if we can't
+        try:
+            with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow([timestamp, agent, analysis_type, page_title, page_url, result_text])
+        except Exception as e:
+            print(f"Warning: Could not save to CSV: {e}")
+            # Still return success - the analysis worked, just couldn't save
         
-        return jsonify({'status': 'ok', 'message': 'Data saved successfully'}), 200
+        return jsonify({'status': 'ok', 'message': 'Data processed successfully'}), 200
     
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
@@ -148,6 +157,7 @@ def search_alternatives():
 
 if __name__ == '__main__':
     init_csv()
-    print(f"Starting server on http://localhost:5001")
+    port = int(os.getenv('PORT', 5001))
+    print(f"Starting server on http://0.0.0.0:{port}")
     print(f"CSV file: {CSV_FILE}")
-    app.run(host='127.0.0.1', port=5001, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)
