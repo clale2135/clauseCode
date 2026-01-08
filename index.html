@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClauseCode AI - Document Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 ClauseCode AI</h1>
+            <p class="subtitle">Analyze Terms & Conditions with AI-Powered Agents</p>
+        </header>
+
+        <main>
+            <!-- Progress Indicator -->
+            <div class="progress-indicator">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Upload</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Choose Agent</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Results</div>
+                </div>
+            </div>
+
+            <!-- Card 1: Document Upload -->
+            <div class="wizard-card active" id="card-1">
+                <div class="card-header">
+                    <h2>📄 Upload Document</h2>
+                    <p class="card-subtitle">Choose your preferred input method</p>
+                </div>
+                <div class="card-body">
+                    <!-- Method Selection -->
+                    <div class="method-selection">
+                        <button class="method-btn" data-method="file">
+                            <span class="method-icon">📁</span>
+                            <h4>Upload File</h4>
+                            <p>PDF or Word document</p>
+                        </button>
+                        <button class="method-btn" data-method="url">
+                            <span class="method-icon">🌐</span>
+                            <h4>Fetch from URL</h4>
+                            <p>Scrape web content</p>
+                        </button>
+                        <button class="method-btn" data-method="text">
+                            <span class="method-icon">📝</span>
+                            <h4>Paste Text</h4>
+                            <p>Copy and paste directly</p>
+                        </button>
+                    </div>
+
+                    <!-- File Upload Input -->
+                    <div class="input-container" id="fileInputContainer" style="display: none;">
+                        <label for="fileUpload" class="file-upload-area">
+                            <span class="upload-icon">📁</span>
+                            <span class="upload-text">Click or drag to upload</span>
+                            <span class="upload-hint">Supports PDF and Word documents</span>
+                            <input type="file" id="fileUpload" accept=".pdf,.doc,.docx" hidden>
+                        </label>
+                    </div>
+
+                    <!-- URL Input -->
+                    <div class="input-container" id="urlInputContainer" style="display: none;">
+                        <div class="url-input-container">
+                            <input 
+                                type="text" 
+                                id="urlInput" 
+                                placeholder="https://example.com/terms-and-conditions"
+                                class="url-input"
+                            >
+                            <button id="scrapeUrlBtn" class="btn btn-secondary">Fetch</button>
+                        </div>
+                    </div>
+
+                    <!-- Text Input -->
+                    <div class="input-container" id="textInputContainer" style="display: none;">
+                        <textarea 
+                            id="textInput" 
+                            placeholder="Paste your document text here..."
+                            rows="10"
+                        ></textarea>
+                    </div>
+
+                    <div id="uploadStatus" class="status-message"></div>
+                </div>
+                <div class="card-footer">
+                    <button id="nextToAgent" class="btn btn-primary">Next: Choose Agent →</button>
+                </div>
+            </div>
+
+            <!-- Card 2: Agent & Analysis Selection -->
+            <div class="wizard-card" id="card-2">
+                <div class="card-header">
+                    <h2>🤖 Choose Your Agent & Analysis</h2>
+                    <p class="card-subtitle">Select an agent personality and analysis type</p>
+                </div>
+                <div class="card-body">
+                    <div class="selection-group">
+                        <h3>Agent Personality</h3>
+                        <div class="agent-grid">
+                            <button class="agent-card" data-agent="Regular">
+                                <span class="agent-icon">📊</span>
+                                <h4>Regular</h4>
+                                <p>Neutral, objective analysis</p>
+                            </button>
+                            <button class="agent-card" data-agent="Lawyer">
+                                <span class="agent-icon">⚖️</span>
+                                <h4>Lawyer</h4>
+                                <p>Legal professional perspective</p>
+                            </button>
+                            <button class="agent-card" data-agent="CEO">
+                                <span class="agent-icon">💼</span>
+                                <h4>CEO</h4>
+                                <p>Business strategy view</p>
+                            </button>
+                            <button class="agent-card" data-agent="Bob">
+                                <span class="agent-icon">🔥</span>
+                                <h4>Bob</h4>
+                                <p>Chaotic professor energy</p>
+                            </button>
+                            <button class="agent-card" data-agent="brainrot">
+                                <span class="agent-icon">🧠</span>
+                                <h4>Brainrot</h4>
+                                <p>YouTuber chaos mode</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="selection-group">
+                        <h3>Analysis Type</h3>
+                        <div class="analysis-grid">
+                            <button class="analysis-card" data-type="malicious">
+                                <span class="analysis-icon">⚠️</span>
+                                <h4>Malicious Clauses</h4>
+                                <p>Find harmful terms</p>
+                            </button>
+                            <button class="analysis-card" data-type="summary">
+                                <span class="analysis-icon">📝</span>
+                                <h4>Summary</h4>
+                                <p>Plain language overview</p>
+                            </button>
+                            <button class="analysis-card" data-type="proscons">
+                                <span class="analysis-icon">⚖️</span>
+                                <h4>Pros & Cons</h4>
+                                <p>Balanced analysis</p>
+                            </button>
+                            <button class="analysis-card" data-type="recommendation">
+                                <span class="analysis-icon">✅</span>
+                                <h4>Recommendation</h4>
+                                <p>Should you sign?</p>
+                            </button>
+                            <button class="analysis-card" data-type="alternatives">
+                                <span class="analysis-icon">🔄</span>
+                                <h4>Alternatives</h4>
+                                <p>Better options</p>
+                            </button>
+                            <button class="analysis-card" data-type="custom">
+                                <span class="analysis-icon">✏️</span>
+                                <h4>Custom Prompt</h4>
+                                <p>Write your own</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Prompt Section -->
+                    <div class="custom-prompt-section" style="display: none;">
+                        <h3>✏️ Custom Prompt</h3>
+                        <textarea 
+                            id="customPrompt" 
+                            placeholder="Enter your custom analysis prompt..."
+                            rows="4"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="backToUpload" class="btn btn-secondary">← Back</button>
+                    <button id="analyzeBtn" class="btn btn-primary" disabled>Analyze Document</button>
+                </div>
+            </div>
+
+            <!-- Card 3: Results -->
+            <div class="wizard-card" id="card-3">
+                <div class="card-header">
+                    <h2 id="resultsTitle">📊 Analysis Results</h2>
+                    <p class="card-subtitle">Your AI-powered document analysis</p>
+                </div>
+                <div class="card-body">
+                    <div class="results-content">
+                        <div id="analysisResults" class="analysis-output"></div>
+                    </div>
+                    <div id="saveStatus" class="status-message"></div>
+                </div>
+                <div class="card-footer">
+                    <button id="backToAgent" class="btn btn-secondary">← Back to Agent</button>
+                    <button id="newAnalysis" class="btn btn-secondary">🔄 New Analysis</button>
+                    <button id="saveBtn" class="btn btn-primary">💾 Save to CSV</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-modal-content">
+            <div class="loading-spinner"></div>
+            <h3>🤔 Analyzing Your Document</h3>
+            <p>Our AI agent is carefully reviewing the content...</p>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/static/app.js"></script>
+</body>
+</html>

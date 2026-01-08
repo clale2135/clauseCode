@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# Local files
+.env
+*.log
+analysis_data.csv
+
+# Documentation
+README.md
+*.md
+
+# Chrome extension files
+manifest.json
+popup.html
+popup.js
+content.js
+icon.png
