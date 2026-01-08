@@ -160,4 +160,5 @@ if __name__ == '__main__':
     port = int(os.getenv('PORT', 5001))
     print(f"Starting server on http://0.0.0.0:{port}")
     print(f"CSV file: {CSV_FILE}")
+    print(f"OpenAI API Key configured: {'Yes' if OPENAI_API_KEY else 'No'}")
     app.run(host='0.0.0.0', port=port, debug=False)

@@ -1,5 +1,5 @@
-// API calls go through backend server (Railway)
-const SERVER_URL = 'https://web-production-2f68a.up.railway.app';
+// API calls go through backend server (local or Railway)
+const SERVER_URL = 'http://localhost:5001';
 
 // Last analysis state
 let lastResultText = "";
