@@ -108,7 +108,11 @@ def analyze():
 
         if not response.ok:
             error_data = response.json()
-            return jsonify({'error': error_data.get('error', {}).get('message', 'OpenAI API error')}), 400
+            error_message = error_data.get('error', {}).get('message', 'OpenAI API error')
+            print(f"OpenAI API Error: {error_message}")
+            print(f"Response status: {response.status_code}")
+            print(f"Response body: {error_data}")
+            return jsonify({'error': error_message}), 400
 
         result = response.json()
         return jsonify({'result': result['choices'][0]['message']['content']}), 200
