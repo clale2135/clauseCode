@@ -11,3 +11,7 @@ sanic==24.6.0
 sanic-cors==2.2.0
 urllib3==2.6.3
 google-cloud-secret-manager==2.21.1
+firebase-admin==7.1.0
+google-auth==2.47.0
+google-auth-oauthlib==1.2.1
+sanic-session==0.8.0

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-client-id" content="761223278824-ijp6lq944kp1lapmcgubvh8pq65r67t3.apps.googleusercontent.com">
+    <title>Saved Analyses - ClauseCode AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .analyses-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-url {
+            font-size: 12px;
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .card-url:hover {
+            text-decoration: underline;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-agent {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-type {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .card-meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .card-result {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .card-section {
+            margin-bottom: 15px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .section-header:hover {
+            background: #5568d3;
+        }
+        
+        .section-header .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        
+        .section-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        
+        .section-content {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            white-space: pre-wrap;
+        }
+        
+        .section-content.collapsed {
+            display: none;
+        }
+        
+        .view-full-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .view-full-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            background: white;
+            padding: 60px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        .error {
+            background: #ff4444;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                    <h1>📊 Saved Analyses</h1>
+                    <p class="subtitle">View and filter your ClauseCode AI analysis history</p>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="/" style="color: #667eea; text-decoration: none; font-weight: 600;">🏠 Home</a>
+                    <a href="/pitch-deck.html" style="color: #667eea; text-decoration: none; font-weight: 600;" target="_blank">📊 Pitch Deck</a>
+                    <a href="/PITCH_NARRATION.md" style="color: #667eea; text-decoration: none; font-weight: 600;" target="_blank">🎤 Narration</a>
+                    <div id="userInfo" class="user-info-compact" style="display: none;">
+                        <img id="userPhoto" style="width: 32px; height: 32px; border-radius: 50%;" alt="User">
+                        <span id="userName" style="font-size: 14px; font-weight: 600;"></span>
+                        <button id="logoutBtn" style="padding: 6px 12px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Logout</button>
+                    </div>
+                    <button id="loginBtn" style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                        Sign in with Google
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Agent/Persona</label>
+                <select id="agentFilter">
+                    <option value="">All Agents</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Lawyer">Lawyer</option>
+                    <option value="CEO">CEO</option>
+                    <option value="Bob">Bob</option>
+                    <option value="brainrot">Brainrot</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Analysis Type</label>
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="malicious_clauses">Malicious Clauses</option>
+                    <option value="summary">Summary</option>
+                    <option value="pros_cons">Pros & Cons</option>
+                    <option value="recommendations">Recommendations</option>
+                    <option value="alternatives">Alternatives</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Results Limit</label>
+                <input type="number" id="limitFilter" value="50" min="1" max="100">
+            </div>
+
+            <button onclick="loadAnalyses()" style="margin-top: 18px;">🔄 Refresh</button>
+        </div>
+
+        <div id="content">
+            <div class="loading">Loading analyses...</div>
+        </div>
+    </div>
+
+    <script>
+        async function loadAnalyses() {
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">Loading analyses...</div>';
+
+            const agent = document.getElementById('agentFilter').value;
+            const analysisType = document.getElementById('typeFilter').value;
+            const limit = document.getElementById('limitFilter').value;
+
+            try {
+                const params = new URLSearchParams();
+                if (agent) params.append('agent', agent);
+                if (analysisType) params.append('analysis_type', analysisType);
+                params.append('limit', limit);
+
+                const response = await fetch(`/analyses?${params.toString()}`);
+                const data = await response.json();
+
+                if (data.status !== 'ok') {
+                    throw new Error(data.message || 'Failed to load analyses');
+                }
+
+                if (data.analyses.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <h2>No analyses found</h2>
+                            <p>No saved analyses match your current filters.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const grid = document.createElement('div');
+                grid.className = 'analyses-grid';
+
+                data.analyses.forEach(analysis => {
+                    const card = createAnalysisCard(analysis);
+                    grid.appendChild(card);
+                });
+
+                content.innerHTML = '';
+                content.appendChild(grid);
+
+            } catch (error) {
+                content.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function createAnalysisCard(analysis) {
+            const card = document.createElement('div');
+            card.className = 'analysis-card';
+
+            const timestamp = new Date(analysis.timestamp).toLocaleString();
+            const hasContent = analysis.page_content && analysis.page_content.trim().length > 0;
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">${escapeHtml(analysis.page_title)}</div>
+                        <a href="${escapeHtml(analysis.page_url)}" target="_blank" class="card-url">
+                            ${escapeHtml(analysis.page_url)}
+                        </a>
+                    </div>
+                    <div class="badges">
+                        <span class="badge badge-agent">${escapeHtml(analysis.agent)}</span>
+                        <span class="badge badge-type">${escapeHtml(analysis.analysis_type)}</span>
+                    </div>
+                </div>
+                <div class="card-meta">
+                    📅 ${timestamp}
+                    ${analysis.id ? `<br>🔖 ID: ${analysis.id}` : ''}
+                </div>
+                <div class="card-result">
+                    ${hasContent ? `
+                    <div class="card-section">
+                        <div class="section-header collapsed" onclick="toggleSection(this)">
+                            <span>📄 Original Contract/Document</span>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed">${escapeHtml(analysis.page_content)}</div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="card-section">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <span>🔍 Analysis Result</span>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">${analysis.result_text}</div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+        
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            const content = header.nextElementSibling;
+            content.classList.toggle('collapsed');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load analyses on page load
+        loadAnalyses();
+    </script>
+    <script src="/static/auth.js"></script>
+</body>
+</html>

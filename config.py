@@ -14,29 +14,15 @@ logger = logging.getLogger(__name__)
 
 def get_secret_from_gcp(secret_name: str, project_id: Optional[str] = None) -> Optional[str]:
     """Fetch secret from Google Cloud Secrets Manager as fallback"""
+    # Skip Secret Manager if running locally (K_SERVICE is Cloud Run env var)
+    if not os.getenv("K_SERVICE"):
+        return None
+        
     try:
         from google.cloud import secretmanager
         
         if not project_id:
-            # Try to get project ID from environment or gcloud config
-            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT")
-            if not project_id:
-                # Try to get from gcloud config
-                import subprocess
-                try:
-                    result = subprocess.run(
-                        ["gcloud", "config", "get-value", "project"],
-                        capture_output=True,
-                        text=True,
-                        timeout=2
-                    )
-                    if result.returncode == 0:
-                        project_id = result.stdout.strip()
-                except Exception:
-                    pass
-        
-        if not project_id:
-            return None
+            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT") or "teachmemedical-prod"
         
         client = secretmanager.SecretManagerServiceClient()
         name = f"projects/{project_id}/secrets/{secret_name}/versions/latest"
@@ -78,11 +64,30 @@ class AppConfig:
     # SerpAPI
     SERPAPI_KEY = get_env_or_secret("SERPAPI_KEY", "SERPAPI_KEY")
     
-    # CSV storage path - use /tmp for cloud deployments
+    # ElevenLabs TTS API
+    ELEVENLABS_API_KEY = get_env_or_secret("ELEVENLABS_API_KEY", "ELEVENLABS_API_KEY")
+    
+    # CSV storage path - disable on cloud deployments (ephemeral filesystem)
+    IS_CLOUD_DEPLOYMENT = bool(os.getenv('RAILWAY_ENVIRONMENT_NAME') or os.getenv('K_SERVICE'))
+    USE_CSV = not IS_CLOUD_DEPLOYMENT  # Disable CSV on cloud
+    
     import tempfile
-    csv_dir = tempfile.gettempdir() if os.getenv('RAILWAY_ENVIRONMENT_NAME') or os.getenv('K_SERVICE') else os.path.dirname(__file__)
+    csv_dir = tempfile.gettempdir() if IS_CLOUD_DEPLOYMENT else os.path.dirname(__file__)
     CSV_FILE = os.path.join(csv_dir, 'analysis_data.csv')
     HEADERS = ['Timestamp', 'Agent', 'Analysis Type', 'Page Title', 'Page URL', 'Result Text']
+    
+    # Firebase/Firestore
+    FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH", "firebase-credentials.json")
+    FIREBASE_PROJECT_ID = "teachmemedical-prod"
+    
+    # Feature flags
+    USE_FIRESTORE = os.getenv("USE_FIRESTORE", "true").lower() == "true"
+    
+    # Google OAuth (prioritize .env, fallback to Secret Manager for Cloud Run)
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID") or get_secret_from_gcp("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET") or get_secret_from_gcp("GOOGLE_CLIENT_SECRET")
+    # Session secret for cookie signing
+    SESSION_SECRET = os.getenv("SESSION_SECRET") or get_secret_from_gcp("SESSION_SECRET") or "dev-secret-key-change-in-production"
 
 
 config = AppConfig()

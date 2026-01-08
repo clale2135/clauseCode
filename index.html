@@ -3,14 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-client-id" content="761223278824-ijp6lq944kp1lapmcgubvh8pq65r67t3.apps.googleusercontent.com">
     <title>ClauseCode AI - Document Analyzer</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🔍 ClauseCode AI</h1>
-            <p class="subtitle">Analyze Terms & Conditions with AI-Powered Agents</p>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>🔍 ClauseCode AI</h1>
+                    <p class="subtitle">Analyze Terms & Conditions with AI-Powered Agents</p>
+                </div>
+                <div class="header-right">
+                    <div id="userInfo" class="user-info" style="display: none;">
+                        <img id="userPhoto" class="user-photo" alt="User">
+                        <span id="userName" class="user-name"></span>
+                        <button id="logoutBtn" class="btn-logout">Logout</button>
+                    </div>
+                    <button id="loginBtn" class="btn-login">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width: 18px; height: 18px; margin-right: 8px;">
+                        Sign in with Google
+                    </button>
+                </div>
+            </div>
+            <div class="header-links">
+                <a href="/pitch-deck.html" class="header-link" target="_blank">📊 View Pitch Deck</a>
+                <a href="/PITCH_NARRATION.md" class="header-link" target="_blank">🎤 Pitch Narration</a>
+                <a href="/saved-analyses.html" class="header-link">💾 My Saved Analyses</a>
+            </div>
         </header>
 
         <main>
@@ -197,6 +218,23 @@
                     <div class="results-content">
                         <div id="analysisResults" class="analysis-output"></div>
                     </div>
+                    
+                    <!-- Q&A Section -->
+                    <div class="qa-section">
+                        <h3>💬 Ask Follow-up Questions</h3>
+                        <div id="conversationContainer" class="conversation-container"></div>
+                        <div class="qa-input-container">
+                            <input 
+                                type="text" 
+                                id="questionInput" 
+                                placeholder="Ask a question about this analysis..."
+                                class="qa-input"
+                            >
+                            <button id="askQuestionBtn" class="btn btn-primary">Ask</button>
+                        </div>
+                        <div id="qaStatus" class="status-message"></div>
+                    </div>
+                    
                     <div id="saveStatus" class="status-message"></div>
                 </div>
                 <div class="card-footer">
@@ -222,6 +260,7 @@
         </div>
     </div>
 
+    <script src="/static/auth.js"></script>
     <script type="module" src="/static/app.js"></script>
 </body>
 </html>

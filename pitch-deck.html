@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClauseCode AI - Pitch Deck</title>
+    <link rel="stylesheet" href="/static/pitch-deck.css">
+</head>
+<body>
+    <div class="deck-container">
+        <!-- Slide Navigation -->
+        <div class="slide-nav">
+            <button id="prevBtn" class="nav-btn">←</button>
+            <span id="slideCounter" class="slide-counter">1 / 11</span>
+            <button id="nextBtn" class="nav-btn">→</button>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <div class="slide-content title-slide">
+                <h1 class="company-name">ClauseCode AI</h1>
+                <p class="tagline">Finally Understand What You're Signing ✍️</p>
+                <div class="slide-footer">
+                    <p class="contact-info">AI that reads the boring stuff so you don't have to</p>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="1" src="/static/audio/slide_1.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 2: Problem -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <h2 class="slide-title">The Problem</h2>
+                <div class="problem-items">
+                    <div class="problem-item">
+                        <span class="problem-icon">📄</span>
+                        <h3>Nobody Actually Reads T&Cs</h3>
+                        <p>We all just scroll and hit "Accept" 🤷</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-icon">⚠️</span>
+                        <h3>Sketchy Hidden Clauses</h3>
+                        <p>Companies hiding bad stuff in legal jargon</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-icon">💸</span>
+                        <h3>Legal Help is $$$</h3>
+                        <p>Students can't afford lawyers</p>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="2" src="/static/audio/slide_2.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 3: Solution -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content">
+                <h2 class="slide-title">The Solution</h2>
+                <div class="solution-grid">
+                    <div class="solution-feature">
+                        <span class="feature-icon">🤖</span>
+                        <h3>AI with Personality</h3>
+                        <p>Serious lawyer mode or chaotic brainrot - you choose</p>
+                    </div>
+                    <div class="solution-feature">
+                        <span class="feature-icon">⚡</span>
+                        <h3>Instant Results</h3>
+                        <p>Get answers in seconds, not days</p>
+                    </div>
+                    <div class="solution-feature">
+                        <span class="feature-icon">🎯</span>
+                        <h3>Actually Helpful</h3>
+                        <p>Finds sketchy stuff, summarizes, gives real advice</p>
+                    </div>
+                    <div class="solution-feature">
+                        <span class="feature-icon">📱</span>
+                        <h3>Works Everywhere</h3>
+                        <p>Chrome, Safari, web, phone - wherever you need it</p>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="3" src="/static/audio/slide_3.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 4: Magic/Technology -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <h2 class="slide-title">How It Works ✨</h2>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <h3>🧠 AI Brain</h3>
+                        <p>ChatGPT 5.2 with 400k token context - reads even the longest docs</p>
+                    </div>
+                    <div class="tech-item">
+                        <h3>📋 Upload Anything</h3>
+                        <p>PDF, Word, website links, or just paste text</p>
+                    </div>
+                    <div class="tech-item">
+                        <h3>🎭 Pick Your Vibe</h3>
+                        <p>Serious lawyer or unhinged brainrot - your call</p>
+                    </div>
+                    <div class="tech-item">
+                        <h3>⚙️ Fast & Reliable</h3>
+                        <p>Cloud-hosted, works on phone or computer</p>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="4" src="/static/audio/slide_4.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 5: Cost Structure -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <h2 class="slide-title">Cost Breakdown 💵</h2>
+                <div class="cost-structure">
+                    <div class="cost-section">
+                        <h3>🔧 Fixed Costs (per month)</h3>
+                        <div class="cost-items">
+                            <div class="cost-item">
+                                <span class="cost-label">Google Cloud Storage</span>
+                                <span class="cost-value">$10</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Domain & SSL</span>
+                                <span class="cost-value">$5</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Administrative (accounting, legal)</span>
+                                <span class="cost-value">$15</span>
+                            </div>
+                            <div class="cost-item total">
+                                <span class="cost-label"><strong>Total Fixed</strong></span>
+                                <span class="cost-value"><strong>$30/mo</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cost-section">
+                        <h3>📊 Variable Costs (per user/doc)</h3>
+                        <div class="cost-items">
+                            <div class="cost-item">
+                                <span class="cost-label">Server per 100 users</span>
+                                <span class="cost-value">$8/mo</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">3-page T&C (2,250 tokens in)</span>
+                                <span class="cost-value">$0.004</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Analysis output (~500 tokens)</span>
+                                <span class="cost-value">$0.007</span>
+                            </div>
+                            <div class="cost-item total">
+                                <span class="cost-label"><strong>Cost per 3-page doc</strong></span>
+                                <span class="cost-value"><strong>~$0.01</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cost-summary">
+                    <h3>💰 Total Monthly Cost Examples</h3>
+                    <div class="cost-examples">
+                        <div class="example-item">
+                            <span class="example-users">100 users (5 docs each)</span>
+                            <span class="example-calc">$30 + $8 + (500 × $0.01) = <strong>$43/mo</strong></span>
+                        </div>
+                        <div class="example-item">
+                            <span class="example-users">1,000 users (5 docs each)</span>
+                            <span class="example-calc">$30 + $80 + (5,000 × $0.01) = <strong>$160/mo</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="5" src="/static/audio/slide_5.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 6: Business Model -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content">
+                <h2 class="slide-title">How We'll Make Money 💰</h2>
+                <div class="business-tiers">
+                    <div class="tier">
+                        <h3>Free</h3>
+                        <p class="tier-price">$0</p>
+                        <ul>
+                            <li>5 docs per month</li>
+                            <li>Basic analysis</li>
+                            <li>All personas</li>
+                        </ul>
+                    </div>
+                    <div class="tier featured">
+                        <h3>Pro</h3>
+                        <p class="tier-price">$5/mo</p>
+                        <ul>
+                            <li>Unlimited docs</li>
+                            <li>All features</li>
+                            <li>Save & export</li>
+                            <li>Student pricing!</li>
+                        </ul>
+                    </div>
+                    <div class="tier">
+                        <h3>Business</h3>
+                        <p class="tier-price">Custom</p>
+                        <ul>
+                            <li>Team licenses</li>
+                            <li>Companies & schools</li>
+                            <li>API access</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="6" src="/static/audio/slide_6.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 7: Marketing & Sales -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <h2 class="slide-title">How We'll Get Users 📱</h2>
+                <div class="gtm-strategy">
+                    <div class="gtm-phase">
+                        <h3>Our Secret Weapon</h3>
+                        <p>High school perspective = authentic content that resonates with EVERYONE</p>
+                    </div>
+                    <div class="gtm-phase">
+                        <h3>Start: Build Community</h3>
+                        <p>TikTok exposing sketchy T&Cs, viral memes</p>
+                    </div>
+                    <div class="gtm-phase">
+                        <h3>Scale: Go Mainstream</h3>
+                        <p>Target: General public (students, professionals, everyone)</p>
+                    </div>
+                </div>
+                <div class="gtm-channels">
+                    <h3>Marketing to Everyone</h3>
+                    <div class="channel-list">
+                        <span class="channel-tag">TikTok</span>
+                        <span class="channel-tag">Reddit</span>
+                        <span class="channel-tag">Instagram</span>
+                        <span class="channel-tag">Chrome Store</span>
+                        <span class="channel-tag">Product Hunt</span>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="7" src="/static/audio/slide_7.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 8: Competition -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content">
+                <h2 class="slide-title">Competitive Landscape</h2>
+                <div class="competition-table">
+                    <div class="comp-row header">
+                        <div class="comp-cell"></div>
+                        <div class="comp-cell">ClauseCode AI</div>
+                        <div class="comp-cell">Traditional Legal</div>
+                        <div class="comp-cell">Other AI Tools</div>
+                    </div>
+                    <div class="comp-row">
+                        <div class="comp-cell label">Speed</div>
+                        <div class="comp-cell">⚡ Seconds</div>
+                        <div class="comp-cell">🐌 Days</div>
+                        <div class="comp-cell">⚡ Seconds</div>
+                    </div>
+                    <div class="comp-row">
+                        <div class="comp-cell label">Cost</div>
+                        <div class="comp-cell">💰 $0-19/mo</div>
+                        <div class="comp-cell">💸 $200-500+</div>
+                        <div class="comp-cell">💰 $10-50/mo</div>
+                    </div>
+                    <div class="comp-row">
+                        <div class="comp-cell label">Personality</div>
+                        <div class="comp-cell">✅ 5 Personas</div>
+                        <div class="comp-cell">❌ Formal Only</div>
+                        <div class="comp-cell">❌ Generic</div>
+                    </div>
+                    <div class="comp-row">
+                        <div class="comp-cell label">Accessibility</div>
+                        <div class="comp-cell">✅ Anyone</div>
+                        <div class="comp-cell">❌ Complex</div>
+                        <div class="comp-cell">⚠️ Tech Users</div>
+                    </div>
+                </div>
+                <p class="competitive-edge"><strong>What Makes Us Different:</strong> We're the only ones making legal stuff actually fun and relatable</p>
+            </div>
+            <audio class="slide-audio" data-slide="8" src="/static/audio/slide_8.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 9: Team -->
+        <div class="slide" data-slide="9">
+            <div class="slide-content">
+                <h2 class="slide-title">Meet the Team 👥</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">👤</div>
+                        <h3>Clare Lee</h3>
+                        <p class="member-role">Founder & Lead Dev</p>
+                        <p class="member-bio">High school coder who got tired of sketchy app T&Cs</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">💻</div>
+                        <h3>Dev Team</h3>
+                        <p class="member-role">Backend & AI</p>
+                        <p class="member-bio">Built Python backend and trained AI personas</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">📊</div>
+                        <h3>Marketing Team</h3>
+                        <p class="member-role">Social & Growth</p>
+                        <p class="member-bio">Running our TikTok and building community</p>
+                    </div>
+                </div>
+                <div class="team-advisors">
+                    <h3>Getting Help From</h3>
+                    <p>CS teachers | Legal professionals | Student entrepreneurship club</p>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="9" src="/static/audio/slide_9.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 10: Projections -->
+        <div class="slide" data-slide="10">
+            <div class="slide-content">
+                <h2 class="slide-title">Growth Goals 📈</h2>
+                <div class="projections-grid">
+                    <div class="projection-item">
+                        <h3>Year 1</h3>
+                        <p class="projection-value">1K users</p>
+                        <p class="projection-detail">Launch Chrome & App Store</p>
+                        <p class="projection-detail">Viral social content</p>
+                    </div>
+                    <div class="projection-item">
+                        <h3>Year 2</h3>
+                        <p class="projection-value">10K users</p>
+                        <p class="projection-detail">$3K monthly revenue</p>
+                        <p class="projection-detail">Mainstream adoption</p>
+                    </div>
+                    <div class="projection-item">
+                        <h3>Year 3</h3>
+                        <p class="projection-value">50K users</p>
+                        <p class="projection-detail">$15K monthly revenue</p>
+                        <p class="projection-detail">B2B partnerships</p>
+                    </div>
+                </div>
+                <div class="unit-economics">
+                    <h3>The Numbers</h3>
+                    <div class="economics-row">
+                        <span>Free → Paid: 5%</span>
+                        <span>Cost per user: $2</span>
+                        <span>Monthly churn: 10%</span>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="10" src="/static/audio/slide_10.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 11: Status & Ask -->
+        <div class="slide" data-slide="11">
+            <div class="slide-content">
+                <h2 class="slide-title">Where We're At 🎯</h2>
+                <div class="status-section">
+                    <h3>✅ What We've Built So Far</h3>
+                    <ul class="status-list">
+                        <li>Chrome extension with 5 AI personas (including brainrot mode lol)</li>
+                        <li>iOS app that works on your phone</li>
+                        <li>Web version for desktop users</li>
+                        <li>Hosted on Google Cloud (actually deployed!)</li>
+                    </ul>
+                </div>
+                <div class="roadmap-section">
+                    <h3>🚀 Next 6 Months</h3>
+                    <div class="roadmap-items">
+                        <div class="roadmap-item">
+                            Launch on Chrome Web Store + App Store
+                        </div>
+                        <div class="roadmap-item">
+                            Get 1,000 users from our school + TikTok
+                        </div>
+                        <div class="roadmap-item">
+                            Add payment system for Pro tier
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <h2>Help Us Make Legal Stuff Less Scary</h2>
+                    <p class="cta-text">Built by high schoolers, for everyone 🚀</p>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="11" src="/static/audio/slide_11.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Progress Dots -->
+        <div class="progress-dots">
+            <span class="dot active" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+            <span class="dot" data-slide="3"></span>
+            <span class="dot" data-slide="4"></span>
+            <span class="dot" data-slide="5"></span>
+            <span class="dot" data-slide="6"></span>
+            <span class="dot" data-slide="7"></span>
+            <span class="dot" data-slide="8"></span>
+            <span class="dot" data-slide="9"></span>
+            <span class="dot" data-slide="10"></span>
+            <span class="dot" data-slide="11"></span>
+        </div>
+    </div>
+
+    <!-- Audio Start Overlay -->
+    <div id="audioStartOverlay" class="audio-start-overlay">
+        <div class="audio-start-content">
+            <h2>🎤 ClauseCode AI Pitch Deck</h2>
+            <p>This presentation includes audio narration</p>
+            <button id="startPresentationBtn" class="start-presentation-btn">
+                Click to Start with Audio 🔊
+            </button>
+            <button id="startSilentBtn" class="start-silent-btn">
+                Start Without Audio (Muted)
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="/static/pitch-deck.js"></script>
+</body>
+</html>

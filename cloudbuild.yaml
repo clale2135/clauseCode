@@ -36,9 +36,9 @@ steps:
       - '--timeout'
       - '300'
       - '--set-env-vars'
-      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
+      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID,K_SERVICE=cloudrun'
       - '--update-secrets'
-      - 'OPENAI_API_KEY=OPENAI_API_KEY:latest'
+      - 'OPENAI_API_KEY=OPENAI_API_KEY:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,SESSION_SECRET=SESSION_SECRET:latest'
 
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/tmm-apps/clausecodeai:$BUILD_ID'

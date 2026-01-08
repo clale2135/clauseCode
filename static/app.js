@@ -43,6 +43,7 @@ let selectedAgent = '';
 let selectedAnalysisType = '';
 let lastAnalysisResult = '';
 let currentStep = 1;
+let conversationHistory = [];
 
 // DOM Elements
 const fileUpload = document.getElementById('fileUpload');
@@ -319,6 +320,7 @@ newAnalysis.addEventListener('click', () => {
     customPrompt.value = '';
     customPromptSection.style.display = 'none';
     updateAnalyzeButton();
+    resetConversation();
     
     goToStep(1);
 });
@@ -342,7 +344,8 @@ saveBtn.addEventListener('click', async () => {
                 analysisType: selectedAnalysisType,
                 pageTitle: 'Document Analysis',
                 pageUrl: window.location.href,
-                resultText: lastAnalysisResult
+                resultText: lastAnalysisResult,
+                pageContent: currentDocument
             })
         });
         
@@ -350,11 +353,161 @@ saveBtn.addEventListener('click', async () => {
             throw new Error('Save failed');
         }
         
-        showStatus(saveStatus, '✅ Saved to CSV successfully!', 'success');
+        showStatus(saveStatus, '✅ Saved successfully!', 'success');
     } catch (error) {
         showStatus(saveStatus, `❌ Save failed: ${error.message}`, 'error');
     }
 });
+
+// Q&A Section Elements
+const questionInput = document.getElementById('questionInput');
+const askQuestionBtn = document.getElementById('askQuestionBtn');
+const conversationContainer = document.getElementById('conversationContainer');
+const qaStatus = document.getElementById('qaStatus');
+
+// Ask Question Handler
+askQuestionBtn.addEventListener('click', async () => {
+    await askQuestion();
+});
+
+// Allow Enter key to submit question
+questionInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        askQuestion();
+    }
+});
+
+async function askQuestion() {
+    const question = questionInput.value.trim();
+    
+    if (!question) {
+        showStatus(qaStatus, '❌ Please enter a question.', 'error');
+        return;
+    }
+    
+    if (!lastAnalysisResult || !currentDocument) {
+        showStatus(qaStatus, '❌ No analysis available to ask questions about.', 'error');
+        return;
+    }
+    
+    // Add user message to conversation
+    addMessageToConversation('user', question);
+    
+    // Clear input and disable
+    questionInput.value = '';
+    questionInput.disabled = true;
+    askQuestionBtn.disabled = true;
+    
+    // Add loading message
+    const loadingMsgId = addLoadingMessage();
+    
+    try {
+        const response = await fetch(`${SERVER_URL}/ask-question`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: question,
+                pageContent: currentDocument,
+                analysisResult: lastAnalysisResult,
+                conversationHistory: conversationHistory
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to get answer');
+        }
+        
+        const data = await response.json();
+        
+        // Remove loading message
+        removeLoadingMessage(loadingMsgId);
+        
+        // Add assistant response to conversation
+        addMessageToConversation('assistant', data.answer);
+        
+        // Update conversation history for memory
+        conversationHistory.push(
+            { role: 'user', content: question },
+            { role: 'assistant', content: data.answer }
+        );
+        
+    } catch (error) {
+        removeLoadingMessage(loadingMsgId);
+        showStatus(qaStatus, `❌ Error: ${error.message}`, 'error');
+    } finally {
+        // Re-enable input
+        questionInput.disabled = false;
+        askQuestionBtn.disabled = false;
+        questionInput.focus();
+    }
+}
+
+function addMessageToConversation(role, content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${role}`;
+    
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'message-label';
+    labelDiv.textContent = role === 'user' ? 'You' : 'Assistant';
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.innerHTML = content;
+    
+    messageDiv.appendChild(labelDiv);
+    messageDiv.appendChild(contentDiv);
+    conversationContainer.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    conversationContainer.scrollTop = conversationContainer.scrollHeight;
+}
+
+function addLoadingMessage() {
+    const messageDiv = document.createElement('div');
+    const msgId = 'loading-' + Date.now();
+    messageDiv.id = msgId;
+    messageDiv.className = 'message message-assistant loading';
+    
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'message-label';
+    labelDiv.textContent = 'Assistant';
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.innerHTML = `
+        <span>Thinking</span>
+        <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+    
+    messageDiv.appendChild(labelDiv);
+    messageDiv.appendChild(contentDiv);
+    conversationContainer.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    conversationContainer.scrollTop = conversationContainer.scrollHeight;
+    
+    return msgId;
+}
+
+function removeLoadingMessage(msgId) {
+    const loadingMsg = document.getElementById(msgId);
+    if (loadingMsg) {
+        loadingMsg.remove();
+    }
+}
+
+// Reset conversation when starting new analysis
+function resetConversation() {
+    conversationHistory = [];
+    conversationContainer.innerHTML = '';
+    questionInput.value = '';
+}
 
 // Helper function to show status messages
 function showStatus(element, message, type) {
