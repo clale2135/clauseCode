@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Ask AI questions about the current page",
   "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["<all_urls>", "https://api.openai.com/*", "https://serpapi.com/*", "http://localhost:5001/*"],
+  "host_permissions": ["<all_urls>", "https://api.openai.com/*", "https://serpapi.com/*", "https://gwc-hq4r.onrender.com/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"

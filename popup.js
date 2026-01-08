@@ -1,5 +1,5 @@
-// API calls go through backend server (local or Railway)
-const SERVER_URL = 'http://localhost:5001';
+// API calls go through backend server (Render)
+const SERVER_URL = 'https://gwc-hq4r.onrender.com';
 
 // Last analysis state
 let lastResultText = "";
@@ -267,7 +267,7 @@ function updateSaveStatus(msg, isError = false) {
 }
 
 async function sendToServer(payload) {
-  const serverUrl = 'http://localhost:5001/save';
+  const serverUrl = `${SERVER_URL}/save`;
   
   updateSaveStatus('Saving...');
 
