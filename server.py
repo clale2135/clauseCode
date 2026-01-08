@@ -7,6 +7,7 @@ and makes API calls to OpenAI and SerpAPI using credentials from .env
 from flask import Flask, request, jsonify
 import csv
 import os
+import sys
 from datetime import datetime
 import requests
 from dotenv import load_dotenv
@@ -83,14 +84,29 @@ def health():
 def analyze():
     """Analyze page content using AI"""
     try:
+        print("=== /analyze endpoint called ===", flush=True)
+        sys.stdout.flush()
+        
         if not OPENAI_API_KEY:
+            print("ERROR: OpenAI API key not configured", flush=True)
             return jsonify({'error': 'OpenAI API key not configured in .env'}), 500
+
+        # Log API key status (masked for security)
+        key_preview = OPENAI_API_KEY[:10] + "..." + OPENAI_API_KEY[-4:] if len(OPENAI_API_KEY) > 14 else "***"
+        print(f"Using API key: {key_preview}", flush=True)
+        sys.stdout.flush()
 
         data = request.get_json()
         page_text = data.get('pageText', '')
         system_prompt = data.get('systemPrompt', '')
+        
+        print(f"Request data received - page_text length: {len(page_text)}, system_prompt length: {len(system_prompt)}", flush=True)
+        sys.stdout.flush()
 
         # Call OpenAI API
+        print("Calling OpenAI API...", flush=True)
+        sys.stdout.flush()
+        
         response = requests.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
@@ -106,12 +122,17 @@ def analyze():
             }
         )
 
+        print(f"OpenAI API response status: {response.status_code}", flush=True)
+        sys.stdout.flush()
+
         if not response.ok:
             error_data = response.json()
             error_message = error_data.get('error', {}).get('message', 'OpenAI API error')
-            print(f"OpenAI API Error: {error_message}")
-            print(f"Response status: {response.status_code}")
-            print(f"Response body: {error_data}")
+            print(f"=== OpenAI API Error ===", flush=True)
+            print(f"Error message: {error_message}", flush=True)
+            print(f"Response status: {response.status_code}", flush=True)
+            print(f"Full response: {error_data}", flush=True)
+            sys.stdout.flush()
             return jsonify({'error': error_message}), 400
 
         result = response.json()
