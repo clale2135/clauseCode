@@ -1,5 +1,5 @@
 let currentSlide = 1;
-const totalSlides = 11;
+const totalSlides = 8;
 let audioEnabled = true;
 let userInteracted = false;
 
