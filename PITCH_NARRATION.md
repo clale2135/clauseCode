@@ -62,15 +62,13 @@ For outputs, you get a plain-English summary of the whole document. Red flag war
 ---
 
 ## Slide 6: User Testing
-**[Duration: 60 seconds]**
+**[Duration: 50 seconds]**
 
-"We did extensive testing with real users. We surveyed 11 students from grades 6 through 12, and the results were incredible. 100% liked the extension. 100% found it easy to use. 100% liked the design. Average rating: 4.9 out of 5.
+"We surveyed 10 students from grades 6 through 12, and the results speak for themselves. 100% liked the extension. 100% found it easy to use. 100% liked the design. Average rating: 4.9 out of 5.
 
-Here's what they said: 'It was easy to understand the terms and conditions.' 'Very easy to understand the language.' And about the brainrot personality - 'it was funny' and 'everyone's on TikTok so it uses terms all ages can understand.' Bob was also a favorite - students loved the emojis and humor.
+Now here's what's really interesting - personality matters. Brainrot was the most popular with 5 votes. Bob came in second with 4 votes. Why? Listen to what students said: One grade 11 student said 'Nothing its so cool' when asked what to change. A grade 12 student explained that brainrot works 'because everyone's on TikTok so it uses terms all ages can understand.' About Bob, students said 'I liked the emojis and humor' and even a 6th grader said 'because hes bob duh.'
 
-What did we learn? Personality matters. Making legal docs fun and relatable works. Our 100% usability rate shows the design is intuitive for everyone from 6th to 12th grade. Users actually understood the terms after using our extension - proving our solution works.
-
-But we didn't just do user testing - we also tested for accuracy. We ran TikTok's entire Terms of Service through all five personas. The Lawyer persona scored 9 out of 10 on identifying scary parts. The CEO and Brain Rot personas both got 9 out of 10 on summaries. Bob got 9 out of 10 on pros and cons. After this testing, we refined our AI prompts to improve accuracy across all personas."
+Students also suggested features we're now building - audio narration, visual elements, bold key terms, and loading animations. This feedback directly shaped our roadmap. The fact that students across such a wide age range - from 6th to 12th grade - all got value from the extension proves our solution works for everyone."
 
 ---
 
