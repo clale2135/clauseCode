@@ -25,9 +25,6 @@ function playSlideAudio(slideNum) {
         return;
     }
     
-    // Stop all currently playing audio
-    stopAllAudio();
-    
     // Find and play audio for this slide
     const audio = document.querySelector(`.slide-audio[data-slide="${slideNum}"]`);
     if (audio) {
@@ -41,6 +38,9 @@ function playSlideAudio(slideNum) {
 }
 
 function updateSlide(slideNum) {
+    // Stop any currently playing audio first
+    stopAllAudio();
+    
     // Remove active class from all slides
     slides.forEach(slide => slide.classList.remove('active'));
     dots.forEach(dot => dot.classList.remove('active'));

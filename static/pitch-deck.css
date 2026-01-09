@@ -308,6 +308,21 @@ body {
     text-align: right;
 }
 
+.quotes-compact {
+    margin-top: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 10px;
+}
+
+.quotes-compact .quote-text {
+    font-size: 14px;
+    color: #2d3748;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+}
+
 /* Demo Content */
 .demo-content {
     margin-top: 20px;
@@ -424,9 +439,9 @@ body {
 }
 
 .testing-stats-header h3 {
-    font-size: 20px;
+    font-size: 18px;
     color: #2d3748;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
@@ -524,24 +539,24 @@ body {
 
 /* Accuracy Testing */
 .accuracy-testing {
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 20px;
+    padding: 15px;
     background: #f0f9ff;
     border-radius: 15px;
     border: 2px solid #3b82f6;
 }
 
 .accuracy-testing h3 {
-    font-size: 19px;
+    font-size: 17px;
     color: #2d3748;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
 .testing-intro {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
@@ -573,31 +588,111 @@ body {
 }
 
 .improvement-note {
-    font-size: 14px;
+    font-size: 13px;
     color: #2d3748;
     text-align: center;
     margin: 0;
-    padding-top: 12px;
+    padding-top: 10px;
     border-top: 2px solid #3b82f6;
 }
 
-/* Next Steps */
-.next-steps-content {
-    margin-top: 20px;
+/* Compact Testing Styles */
+.testing-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
 }
 
-.steps-section {
-    margin-bottom: 25px;
+.compact-section {
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #10b981;
+}
+
+.compact-section h3 {
+    font-size: 17px;
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.compact-section p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.accuracy-results-compact {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.accuracy-row {
+    background: white;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.accuracy-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+    min-width: 100px;
+}
+
+.accuracy-scores {
+    font-size: 13px;
+    color: #666;
+    text-align: right;
+}
+
+/* Next Steps */
+.next-steps-horizontal {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.steps-card {
     background: #f7fafc;
     padding: 20px;
     border-radius: 15px;
-    border-left: 5px solid #667eea;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
 }
 
-.steps-section h3 {
-    font-size: 19px;
-    color: #2d3748;
+.steps-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.card-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.steps-card h3 {
+    font-size: 18px;
+    color: #2d3748;
+    margin: 0;
 }
 
 .steps-list {
@@ -608,7 +703,8 @@ body {
 .steps-list li {
     padding: 8px 0;
     color: #666;
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .steps-list li:before {
@@ -649,15 +745,15 @@ body {
 }
 
 .problem-item h3 {
-    font-size: 20px;
+    font-size: 19px;
     color: #2d3748;
     margin-bottom: 8px;
 }
 
 .problem-item p {
-    font-size: 16px;
+    font-size: 15px;
     color: #666;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .research-citation {
@@ -1260,8 +1356,14 @@ body {
     .team-grid,
     .projections-grid,
     .features-io,
-    .stats-grid {
+    .stats-grid,
+    .testing-compact,
+    .next-steps-horizontal {
         grid-template-columns: 1fr;
+    }
+    
+    .steps-card:hover {
+        transform: none;
     }
 
     .comp-row {
