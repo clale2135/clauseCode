@@ -269,6 +269,16 @@ async def saved_analyses_page(request):
     except FileNotFoundError:
         return json_response({'error': 'Saved analyses page not found'}, status=404)
 
+@app.route('/terms.html', methods=['GET'])
+async def terms_page(request):
+    """Serve the terms and conditions page"""
+    try:
+        async with aiofiles.open('terms.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Terms and conditions page not found'}, status=404)
+
 # Google OAuth endpoints
 @app.route('/auth/google', methods=['POST'])
 async def google_auth(request):
