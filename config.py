@@ -22,7 +22,7 @@ def get_secret_from_gcp(secret_name: str, project_id: Optional[str] = None) -> O
         from google.cloud import secretmanager
         
         if not project_id:
-            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT") or "teachmemedical-prod"
+            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT")
         
         client = secretmanager.SecretManagerServiceClient()
         name = f"projects/{project_id}/secrets/{secret_name}/versions/latest"
@@ -78,7 +78,7 @@ class AppConfig:
     
     # Firebase/Firestore
     FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH", "firebase-credentials.json")
-    FIREBASE_PROJECT_ID = "teachmemedical-prod"
+    FIREBASE_PROJECT_ID = os.getenv("FIREBASE_PROJECT_ID")
     
     # Feature flags
     USE_FIRESTORE = os.getenv("USE_FIRESTORE", "true").lower() == "true"

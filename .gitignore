@@ -5,3 +5,11 @@ __pycache__/
 *.pyc
 .env
 node_modules/
+firebase-credentials.json
+*-credentials.json
+deploy.sh
+setup_secrets.sh
+cloudbuild.yaml
+.gcloud/
+.config/
+*.md
