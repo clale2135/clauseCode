@@ -14,25 +14,24 @@ logger = logging.getLogger(__name__)
 
 def get_secret_from_gcp(secret_name: str, project_id: Optional[str] = None) -> Optional[str]:
     """Fetch secret from Google Cloud Secrets Manager as fallback"""
-    # Skip Secret Manager if running locally (K_SERVICE is Cloud Run env var)
-    if not os.getenv("K_SERVICE"):
-        return None
-        
     try:
         from google.cloud import secretmanager
         
         if not project_id:
-            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT")
+            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT") or "teachmemedical-prod"
         
+        logger.info(f"Attempting to fetch secret {secret_name} from project {project_id}")
         client = secretmanager.SecretManagerServiceClient()
         name = f"projects/{project_id}/secrets/{secret_name}/versions/latest"
         response = client.access_secret_version(request={"name": name})
-        return response.payload.data.decode("UTF-8").strip()
+        value = response.payload.data.decode("UTF-8").strip()
+        logger.info(f"Successfully retrieved secret {secret_name}")
+        return value
     except ImportError:
-        logger.debug("google-cloud-secret-manager not available")
+        logger.warning("google-cloud-secret-manager not available")
         return None
     except Exception as e:
-        logger.debug(f"Could not fetch {secret_name} from GCP Secrets Manager: {e}")
+        logger.error(f"Could not fetch {secret_name} from GCP Secrets Manager: {e}")
         return None
 
 
