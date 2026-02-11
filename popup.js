@@ -185,7 +185,10 @@ async function analyzePage(selectedAgent, analysisType) {
     const pageData = results[0].result;
     const pageText = pageData.text.slice(0, 8000);
 
-    const systemPrompt = getAnalysisPrompt(selectedAgent, analysisType);
+    let systemPrompt = getAnalysisPrompt(selectedAgent, analysisType);
+    
+    // Add real-life case examples instruction
+    systemPrompt += `\n\nIMPORTANT: For each significant issue, clause, or concern you identify, provide a real-life example or case where users experienced problems after signing similar contracts. Include specific company names, incidents, lawsuits, or documented cases when possible. These examples should illustrate the real-world consequences of such terms. Format each real-life example in a visually distinct box using: <div class="case-example"><strong>📋 Real Case:</strong> [your example here]</div>`;
     
     if (analysisType === "alternatives") {
       // For alternatives, get from SerpAPI and also use AI

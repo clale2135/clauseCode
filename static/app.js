@@ -203,6 +203,13 @@ scrapeUrlBtn.addEventListener('click', async () => {
         const data = await response.json();
         currentDocument = data.text;
         textInput.value = ''; // Clear text input
+        
+        // Show centered success message
+        showCenteredMessage(`✅ Content fetched successfully!<br>${data.text.length} characters from "${data.title}"`);
+        
+        // Highlight the "Next: Choose Agent" button
+        highlightNextButton();
+        
         showStatus(uploadStatus, `✅ Content scraped successfully! ${data.text.length} characters from "${data.title}"`, 'success');
     } catch (error) {
         showStatus(uploadStatus, `❌ Scraping failed: ${error.message}`, 'error');
@@ -309,6 +316,9 @@ async function runAnalysis(customPromptText = null) {
     
     try {
         let systemPrompt = customPromptText || PROMPTS[selectedAgent][selectedAnalysisType];
+        
+        // Add real-life case examples instruction
+        systemPrompt += `\n\nIMPORTANT: For each significant issue, clause, or concern you identify, provide a real-life example or case where users experienced problems after signing similar contracts. Include specific company names, incidents, lawsuits, or documented cases when possible. These examples should illustrate the real-world consequences of such terms. Format each real-life example in a visually distinct box using: <div class="case-example"><strong>📋 Real Case:</strong> [your example here]</div>`;
         
         // Add language instruction if not English
         if (selectedLanguage && selectedLanguage !== 'English') {
@@ -643,15 +653,28 @@ if (fileUploadMobile) {
 
 // Sample URL buttons handler
 document.querySelectorAll('.sample-url-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
         const url = e.target.getAttribute('data-url');
         const urlInput = document.getElementById('urlInput');
         const urlInputMobile = document.getElementById('urlInputMobile');
-        if (urlInput) {
-            urlInput.value = url;
-        }
-        if (urlInputMobile) {
+        
+        // Determine if we're in mobile or desktop view
+        const isMobile = isMobileDevice();
+        
+        if (isMobile && urlInputMobile) {
+            // Mobile: Set URL and auto-click mobile fetch button
             urlInputMobile.value = url;
+            const scrapeUrlBtnMobile = document.getElementById('scrapeUrlBtnMobile');
+            if (scrapeUrlBtnMobile) {
+                scrapeUrlBtnMobile.click();
+            }
+        } else if (urlInput) {
+            // Desktop: Set URL and auto-click desktop fetch button
+            urlInput.value = url;
+            const scrapeUrlBtn = document.getElementById('scrapeUrlBtn');
+            if (scrapeUrlBtn) {
+                scrapeUrlBtn.click();
+            }
         }
     });
 });
@@ -691,6 +714,12 @@ if (scrapeUrlBtnMobile && urlInputMobile) {
             
             showStatus(uploadStatus, `✅ Content scraped successfully! ${data.text.length} characters from "${data.title}"`, 'success');
             closeModal('urlFetchModal');
+            
+            // Show centered success message
+            showCenteredMessage(`✅ Content fetched successfully!<br>${data.text.length} characters from "${data.title}"`);
+            
+            // Highlight the "Next: Choose Agent" button
+            highlightNextButton();
         } catch (error) {
             showStatus(uploadStatusMobile, `❌ Scraping failed: ${error.message}`, 'error');
         }
@@ -724,3 +753,111 @@ document.querySelectorAll('.upload-modal-footer .btn-secondary').forEach(btn => 
         }
     });
 });
+
+// Show centered success message
+function showCenteredMessage(message) {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'centeredMessageOverlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-in-out;
+    `;
+    
+    // Create message box
+    const messageBox = document.createElement('div');
+    messageBox.style.cssText = `
+        background: white;
+        padding: 40px 60px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 80%;
+        animation: scaleIn 0.3s ease-in-out;
+    `;
+    
+    // Create message text
+    const messageText = document.createElement('div');
+    messageText.style.cssText = `
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #10b981;
+        margin-bottom: 30px;
+    `;
+    messageText.innerHTML = message;
+    
+    // Create button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next: Choose Agent →';
+    nextButton.style.cssText = `
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    `;
+    
+    nextButton.addEventListener('mouseenter', () => {
+        nextButton.style.transform = 'translateY(-2px)';
+        nextButton.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.6)';
+    });
+    
+    nextButton.addEventListener('mouseleave', () => {
+        nextButton.style.transform = 'translateY(0)';
+        nextButton.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.4)';
+    });
+    
+    nextButton.addEventListener('click', () => {
+        overlay.remove();
+        goToStep(2);
+    });
+    
+    messageBox.appendChild(messageText);
+    messageBox.appendChild(nextButton);
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
+    
+    // Click overlay (not button) to dismiss
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.style.animation = 'fadeOut 0.3s ease-in-out';
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
+        }
+    });
+}
+
+// Highlight the Next: Choose Agent button
+function highlightNextButton() {
+    const nextBtn = document.getElementById('nextToAgent');
+    if (nextBtn) {
+        // Add pulsing highlight animation
+        nextBtn.style.animation = 'pulse 1.5s ease-in-out infinite';
+        nextBtn.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.8)';
+        
+        // Remove animation after 10 seconds or when clicked
+        const removeHighlight = () => {
+            nextBtn.style.animation = '';
+            nextBtn.style.boxShadow = '';
+            nextBtn.removeEventListener('click', removeHighlight);
+        };
+        
+        setTimeout(removeHighlight, 10000);
+        nextBtn.addEventListener('click', removeHighlight);
+    }
+}

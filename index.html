@@ -300,6 +300,11 @@
                     <div class="selection-group">
                         <h3>Analysis Type</h3>
                         <div class="analysis-grid">
+                            <button class="analysis-card" data-type="comprehensive">
+                                <span class="analysis-icon">🎯</span>
+                                <h4>Comprehensive</h4>
+                                <p>All perspectives</p>
+                            </button>
                             <button class="analysis-card" data-type="malicious">
                                 <span class="analysis-icon">⚠️</span>
                                 <h4>Malicious Clauses</h4>
@@ -324,11 +329,6 @@
                                 <span class="analysis-icon">🔄</span>
                                 <h4>Alternatives</h4>
                                 <p>Better options</p>
-                            </button>
-                            <button class="analysis-card" data-type="comprehensive">
-                                <span class="analysis-icon">🎯</span>
-                                <h4>Comprehensive</h4>
-                                <p>All perspectives</p>
                             </button>
                             <button class="analysis-card" data-type="custom">
                                 <span class="analysis-icon">✏️</span>
@@ -361,10 +361,6 @@
                     <p class="card-subtitle">Your AI-powered document analysis</p>
                 </div>
                 <div class="card-body">
-                    <div class="results-content">
-                        <div id="analysisResults" class="analysis-output"></div>
-                    </div>
-                    
                     <!-- Q&A Section -->
                     <div class="qa-section">
                         <h3>💬 Ask Follow-up Questions</h3>
@@ -379,6 +375,10 @@
                             <button id="askQuestionBtn" class="btn btn-primary">Ask</button>
                         </div>
                         <div id="qaStatus" class="status-message"></div>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div id="analysisResults" class="analysis-output"></div>
                     </div>
                     
                     <div id="saveStatus" class="status-message"></div>
@@ -521,14 +521,14 @@
         
         // Mobile dropdown toggle
         document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggle = document.querySelector('.dropdown-toggle-mobile');
-            if (dropdownToggle) {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle-mobile');
+            dropdownToggles.forEach(function(dropdownToggle) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     const dropdown = this.closest('.mobile-dropdown');
                     dropdown.classList.toggle('active');
                 });
-            }
+            });
         });
     </script>
 </body>
