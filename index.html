@@ -12,13 +12,16 @@
     <nav class="desktop-navbar">
         <div class="navbar-container">
             <div class="navbar-brand">
-                <button onclick="window.history.back()" class="navbar-back-btn" title="Go back">
-                    <span>←</span>
-                </button>
-                <span class="navbar-logo">🔍</span>
-                <span class="navbar-title">ClauseCode AI</span>
+                <a href="/" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                    <span class="navbar-logo">🔍</span>
+                    <span class="navbar-title">ClauseCode AI</span>
+                </a>
             </div>
             <div class="navbar-links">
+                <a href="/" class="navbar-link">
+                    <span class="navbar-icon">🏠</span>
+                    <span>Home</span>
+                </a>
                 <div class="navbar-dropdown">
                     <button class="navbar-link dropdown-toggle">
                         <span class="navbar-icon">ℹ️</span>
@@ -237,8 +240,10 @@
                     <p class="card-subtitle">Select an agent personality and analysis type</p>
                 </div>
                 <div class="card-body">
-                    <div class="selection-group">
+                    <!-- Step 1: Agent Personality -->
+                    <div class="selection-group" id="agentStep">
                         <h3>Agent Personality</h3>
+                        <p class="step-subtitle">Select an agent personality and analysis type</p>
                         <div class="agent-grid">
                             <button class="agent-card" data-agent="Regular">
                                 <span class="agent-icon">📊</span>
@@ -268,37 +273,10 @@
                         </div>
                     </div>
 
-                    <div class="selection-group">
-                        <h3>🌍 Response Language</h3>
-                        <div class="language-selector">
-                            <select id="languageSelect" class="language-select">
-                                <option value="English">English</option>
-                                <option value="Spanish">Español (Spanish)</option>
-                                <option value="French">Français (French)</option>
-                                <option value="German">Deutsch (German)</option>
-                                <option value="Italian">Italiano (Italian)</option>
-                                <option value="Portuguese">Português (Portuguese)</option>
-                                <option value="Chinese">中文 (Chinese)</option>
-                                <option value="Japanese">日本語 (Japanese)</option>
-                                <option value="Korean">한국어 (Korean)</option>
-                                <option value="Arabic">العربية (Arabic)</option>
-                                <option value="Russian">Русский (Russian)</option>
-                                <option value="Hindi">हिन्दी (Hindi)</option>
-                                <option value="Dutch">Nederlands (Dutch)</option>
-                                <option value="Polish">Polski (Polish)</option>
-                                <option value="Turkish">Türkçe (Turkish)</option>
-                                <option value="Vietnamese">Tiếng Việt (Vietnamese)</option>
-                                <option value="Thai">ไทย (Thai)</option>
-                                <option value="Swedish">Svenska (Swedish)</option>
-                                <option value="Norwegian">Norsk (Norwegian)</option>
-                                <option value="Danish">Dansk (Danish)</option>
-                            </select>
-                            <p class="language-hint">The agent will respond in your selected language</p>
-                        </div>
-                    </div>
-
-                    <div class="selection-group">
+                    <!-- Step 2: Analysis Type -->
+                    <div class="selection-group" id="analysisStep" style="display: none;">
                         <h3>Analysis Type</h3>
+                        <p class="step-subtitle">Choose what type of analysis you want</p>
                         <div class="analysis-grid">
                             <button class="analysis-card" data-type="comprehensive">
                                 <span class="analysis-icon">🎯</span>
@@ -336,21 +314,54 @@
                                 <p>Write your own</p>
                             </button>
                         </div>
+                        
+                        <!-- Custom Prompt Section -->
+                        <div class="custom-prompt-section" style="display: none;">
+                            <h3>✏️ Custom Prompt</h3>
+                            <textarea 
+                                id="customPrompt" 
+                                placeholder="Enter your custom analysis prompt..."
+                                rows="4"
+                            ></textarea>
+                        </div>
                     </div>
 
-                    <!-- Custom Prompt Section -->
-                    <div class="custom-prompt-section" style="display: none;">
-                        <h3>✏️ Custom Prompt</h3>
-                        <textarea 
-                            id="customPrompt" 
-                            placeholder="Enter your custom analysis prompt..."
-                            rows="4"
-                        ></textarea>
+                    <!-- Step 3: Language Selection -->
+                    <div class="selection-group" id="languageStep" style="display: none;">
+                        <h3>🌍 Response Language</h3>
+                        <p class="step-subtitle">Select the language for the analysis response</p>
+                        <div class="language-selector">
+                            <select id="languageSelect" class="language-select">
+                                <option value="English">English</option>
+                                <option value="Spanish">Español (Spanish)</option>
+                                <option value="French">Français (French)</option>
+                                <option value="German">Deutsch (German)</option>
+                                <option value="Italian">Italiano (Italian)</option>
+                                <option value="Portuguese">Português (Portuguese)</option>
+                                <option value="Chinese">中文 (Chinese)</option>
+                                <option value="Japanese">日本語 (Japanese)</option>
+                                <option value="Korean">한국어 (Korean)</option>
+                                <option value="Arabic">العربية (Arabic)</option>
+                                <option value="Russian">Русский (Russian)</option>
+                                <option value="Hindi">हिन्दी (Hindi)</option>
+                                <option value="Dutch">Nederlands (Dutch)</option>
+                                <option value="Polish">Polski (Polish)</option>
+                                <option value="Turkish">Türkçe (Turkish)</option>
+                                <option value="Vietnamese">Tiếng Việt (Vietnamese)</option>
+                                <option value="Thai">ไทย (Thai)</option>
+                                <option value="Swedish">Svenska (Swedish)</option>
+                                <option value="Norwegian">Norsk (Norwegian)</option>
+                                <option value="Danish">Dansk (Danish)</option>
+                            </select>
+                            <p class="language-hint">The agent will respond in your selected language</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
                     <button id="backToUpload" class="btn btn-secondary">← Back</button>
-                    <button id="analyzeBtn" class="btn btn-primary" disabled>Analyze Document</button>
+                    <button id="selectionBackBtn" class="btn btn-secondary" style="display: none;">← Back</button>
+                    <button id="selectionNextBtn" class="btn btn-primary" style="display: none;">Next →</button>
+                    <button id="analyzeBtn" class="btn btn-primary" disabled style="display: none;">Analyze Document</button>
                 </div>
             </div>
 
@@ -360,9 +371,16 @@
                     <h2 id="resultsTitle">📊 Analysis Results</h2>
                     <p class="card-subtitle">Your AI-powered document analysis</p>
                 </div>
+                
+                <!-- Tab Navigation -->
+                <div class="results-tabs">
+                    <button class="results-tab active" data-tab="chat">💬 Chat</button>
+                    <button class="results-tab" data-tab="analysis">📊 Analysis</button>
+                </div>
+                
                 <div class="card-body">
                     <!-- Q&A Section -->
-                    <div class="qa-section">
+                    <div class="qa-section tab-content active" id="chatTab">
                         <h3>💬 Ask Follow-up Questions</h3>
                         <div id="conversationContainer" class="conversation-container"></div>
                         <div class="qa-input-container">
@@ -377,8 +395,11 @@
                         <div id="qaStatus" class="status-message"></div>
                     </div>
                     
-                    <div class="results-content">
-                        <div id="analysisResults" class="analysis-output"></div>
+                    <!-- Analysis Section -->
+                    <div class="tab-content" id="analysisTab">
+                        <div class="results-content">
+                            <div id="analysisResults" class="analysis-output"></div>
+                        </div>
                     </div>
                     
                     <div id="saveStatus" class="status-message"></div>

@@ -50,6 +50,7 @@ let selectedLanguage = 'English';
 let lastAnalysisResult = '';
 let currentStep = 1;
 let conversationHistory = [];
+let selectionStep = 1; // 1=agent, 2=analysis, 3=language
 
 // DOM Elements
 const fileUpload = document.getElementById('fileUpload');
@@ -73,10 +74,17 @@ const backToUpload = document.getElementById('backToUpload');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const backToAgent = document.getElementById('backToAgent');
 const newAnalysis = document.getElementById('newAnalysis');
+const selectionBackBtn = document.getElementById('selectionBackBtn');
+const selectionNextBtn = document.getElementById('selectionNextBtn');
 
 // Cards and progress
 const wizardCards = document.querySelectorAll('.wizard-card, .wizard-section');
 const progressSteps = document.querySelectorAll('.progress-step');
+
+// Selection steps
+const agentStep = document.getElementById('agentStep');
+const analysisStep = document.getElementById('analysisStep');
+const languageStep = document.getElementById('languageStep');
 
 // Loading modal
 const loadingModal = document.getElementById('loadingModal');
@@ -106,6 +114,51 @@ function goToStep(step) {
     });
     
     currentStep = step;
+    
+    // Reset selection step when going to card 2
+    if (step === 2) {
+        selectionStep = 1;
+        updateSelectionStep();
+    }
+}
+
+// Selection Step Navigation
+function updateSelectionStep() {
+    // Hide all steps
+    agentStep.style.display = 'none';
+    analysisStep.style.display = 'none';
+    languageStep.style.display = 'none';
+    
+    // Show current step
+    if (selectionStep === 1) {
+        agentStep.style.display = 'block';
+        backToUpload.style.display = 'inline-block';
+        selectionBackBtn.style.display = 'none';
+        selectionNextBtn.style.display = selectedAgent ? 'inline-block' : 'none';
+        analyzeBtn.style.display = 'none';
+    } else if (selectionStep === 2) {
+        analysisStep.style.display = 'block';
+        backToUpload.style.display = 'none';
+        selectionBackBtn.style.display = 'inline-block';
+        
+        // Check if analysis type is selected and if custom, check if prompt is filled
+        const canProceed = selectedAnalysisType && 
+            (selectedAnalysisType !== 'custom' || customPrompt.value.trim());
+        selectionNextBtn.style.display = canProceed ? 'inline-block' : 'none';
+        analyzeBtn.style.display = 'none';
+    } else if (selectionStep === 3) {
+        languageStep.style.display = 'block';
+        backToUpload.style.display = 'none';
+        selectionBackBtn.style.display = 'inline-block';
+        selectionNextBtn.style.display = 'none';
+        analyzeBtn.style.display = 'inline-block';
+        analyzeBtn.disabled = false;
+    }
+}
+
+function goToSelectionStep(step) {
+    selectionStep = step;
+    updateSelectionStep();
 }
 
 // Check if device is mobile/tablet
@@ -245,13 +298,27 @@ backToUpload.addEventListener('click', () => {
     goToStep(1);
 });
 
+// Selection Navigation: Back Button
+selectionBackBtn.addEventListener('click', () => {
+    if (selectionStep > 1) {
+        goToSelectionStep(selectionStep - 1);
+    }
+});
+
+// Selection Navigation: Next Button
+selectionNextBtn.addEventListener('click', () => {
+    if (selectionStep < 3) {
+        goToSelectionStep(selectionStep + 1);
+    }
+});
+
 // Agent Selection
 agentCards.forEach(card => {
     card.addEventListener('click', () => {
         agentCards.forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         selectedAgent = card.dataset.agent;
-        updateAnalyzeButton();
+        updateSelectionStep();
     });
 });
 
@@ -275,7 +342,7 @@ analysisCards.forEach(card => {
             customPromptSection.style.display = 'none';
         }
         
-        updateAnalyzeButton();
+        updateSelectionStep();
     });
 });
 
@@ -292,7 +359,10 @@ function updateAnalyzeButton() {
 }
 
 // Custom prompt input handler
-customPrompt.addEventListener('input', updateAnalyzeButton);
+customPrompt.addEventListener('input', () => {
+    updateAnalyzeButton();
+    updateSelectionStep();
+});
 
 // Analyze Button Handler
 analyzeBtn.addEventListener('click', async () => {
@@ -345,6 +415,22 @@ async function runAnalysis(customPromptText = null) {
         analysisResults.classList.remove('loading');
         analysisResults.innerHTML = data.result;
         resultsTitle.textContent = `📊 ${selectedAgent} - ${selectedAnalysisType === 'custom' ? 'Custom Analysis' : selectedAnalysisType.charAt(0).toUpperCase() + selectedAnalysisType.slice(1)}`;
+        
+        // Switch to analysis tab when results are ready
+        const analysisTabBtn = document.querySelector('.results-tab[data-tab="analysis"]');
+        const analysisTab = document.getElementById('analysisTab');
+        const chatTab = document.getElementById('chatTab');
+        const chatTabBtn = document.querySelector('.results-tab[data-tab="chat"]');
+        
+        if (analysisTabBtn && analysisTab) {
+            // Remove active from chat
+            if (chatTabBtn) chatTabBtn.classList.remove('active');
+            if (chatTab) chatTab.classList.remove('active');
+            
+            // Activate analysis tab
+            analysisTabBtn.classList.add('active');
+            analysisTab.classList.add('active');
+        }
         
     } catch (error) {
         analysisResults.classList.remove('loading');
@@ -861,3 +947,29 @@ function highlightNextButton() {
         nextBtn.addEventListener('click', removeHighlight);
     }
 }
+
+// Tab switching functionality for Chat and Analysis
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.results-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show corresponding content
+            if (targetTab === 'chat') {
+                document.getElementById('chatTab').classList.add('active');
+            } else if (targetTab === 'analysis') {
+                document.getElementById('analysisTab').classList.add('active');
+            }
+        });
+    });
+});
