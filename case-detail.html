@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study Details - ClauseCode AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .case-detail-page {
+            min-height: 100vh;
+            padding: 100px 20px 40px;
+        }
+
+        .case-detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .case-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .case-icon-large {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .case-title-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .case-meta-large {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .severity.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .severity.high {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fdba74;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .severity.medium {
+            background: rgba(234, 179, 8, 0.2);
+            color: #fde047;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .meta-item-large {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .case-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .case-content h3 {
+            font-size: 1.8rem;
+            color: #60a5fa;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .case-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .case-content p {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .case-content ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .case-content li {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .impact-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .impact-box strong {
+            color: #60a5fa;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .impact-box p {
+            margin-bottom: 0;
+        }
+
+        .lesson-learned {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .lesson-learned strong {
+            color: #4ade80;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .lesson-learned p {
+            margin-bottom: 0;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        }
+
+        @media (max-width: 768px) {
+            .case-detail-page {
+                padding: 40px 15px 30px;
+            }
+
+            .case-icon-large {
+                font-size: 3.5rem;
+            }
+
+            .case-title-large {
+                font-size: 1.8rem;
+            }
+
+            .case-content {
+                padding: 25px;
+            }
+
+            .case-content h3 {
+                font-size: 1.4rem;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop/iPad Navbar -->
+    <nav class="desktop-navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <button onclick="window.history.back()" class="navbar-back-btn" title="Go back">
+                    <span>←</span>
+                </button>
+                <span class="navbar-logo">🔍</span>
+                <span class="navbar-title">ClauseCode AI</span>
+            </div>
+            <div class="navbar-links">
+                <a href="/" class="navbar-link">
+                    <span class="navbar-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="/case-studies.html" class="navbar-link">
+                    <span class="navbar-icon">⚖️</span>
+                    <span>All Cases</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="case-detail-page">
+        <div class="case-detail-container">
+            <div class="case-header">
+                <div class="case-icon-large" id="caseIcon">📊</div>
+                <h1 class="case-title-large" id="caseTitle">Loading...</h1>
+                <div class="case-meta-large" id="caseMeta"></div>
+            </div>
+
+            <div class="case-content" id="caseContent">
+                <p>Loading case details...</p>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="/case-studies.html" class="nav-btn">← All Cases</a>
+                <a href="/" class="nav-btn">Home →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cases = {
+            'cambridge-analytica': {
+                icon: '📊',
+                title: 'Facebook & Cambridge Analytica Data Scandal',
+                severity: 'critical',
+                date: '2018',
+                affected: '87 million users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>Cambridge Analytica harvested personal data from millions of Facebook users without their explicit consent through a seemingly innocent personality quiz app. The data was then used for political advertising and voter manipulation during the 2016 U.S. presidential election and Brexit referendum.</p>
+                    
+                    <h3>The Problematic Clause</h3>
+                    <p>Facebook's terms allowed third-party apps to access not only the data of users who installed the app, but also the data of their friends. The data sharing clause stated:</p>
+                    <ul>
+                        <li>Apps could collect information about users and their friends</li>
+                        <li>Broad permissions for data use by third parties</li>
+                        <li>Vague language about how data could be shared and used</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>87 million users had their personal information, including likes, locations, and private messages, harvested without meaningful consent. This data was used to create psychological profiles for targeted political advertising. Facebook was fined $5 billion by the FTC.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Always scrutinize clauses about third-party data sharing and friend data access. If an app can access your friends' data, everyone in your network is at risk. Question why an app needs access to information beyond what's necessary for its core function.</p>
+                    </div>
+                `
+            },
+            'uber-arbitration': {
+                icon: '🚗',
+                title: "Uber's Forced Arbitration Clause",
+                severity: 'high',
+                date: '2013-2018',
+                affected: 'Millions of users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>Uber's terms of service included a mandatory arbitration clause that prevented users from filing class-action lawsuits. Victims of sexual assault, price fixing, and wage theft were forced into private arbitration, where they couldn't band together or make their cases public.</p>
+                    
+                    <h3>The Problematic Clause</h3>
+                    <ul>
+                        <li>Mandatory binding arbitration for all disputes</li>
+                        <li>Class action waiver preventing group lawsuits</li>
+                        <li>Confidentiality requirements that silenced victims</li>
+                        <li>Users gave up their right to sue in court</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>Thousands of sexual assault victims were silenced and forced into private arbitration. Drivers couldn't collectively sue for wage theft. Customers couldn't join together to challenge price fixing. Individual arbitration is expensive and favors the company with deeper pockets.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Forced arbitration clauses strip away your right to sue and your ability to join with others. After public pressure, Uber changed its policy for sexual assault cases in 2018, but arbitration clauses remain common. Look for services that don't require you to give up your day in court.</p>
+                    </div>
+                `
+            },
+            'tiktok-data': {
+                icon: '🎵',
+                title: "TikTok's Extensive Data Collection",
+                severity: 'critical',
+                date: '2019-Present',
+                affected: '1+ billion users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>TikTok's privacy policy allowed the collection of vast amounts of user data, including biometric information, browsing history, keystroke patterns, and location data. Security researchers discovered the app was accessing clipboard data and could track users across the web.</p>
+                    
+                    <h3>The Problematic Clauses</h3>
+                    <ul>
+                        <li>Collection of "faceprints and voiceprints" (biometric data)</li>
+                        <li>Tracking of keystroke patterns and rhythms</li>
+                        <li>Access to device clipboard (passwords, credit cards, etc.)</li>
+                        <li>Sharing data with parent company ByteDance in China</li>
+                        <li>Vague language about "business partners" who receive data</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>TikTok was fined $5.7 million for illegally collecting children's data. Multiple countries banned the app on government devices. Users had sensitive clipboard data (including passwords) accessed without their knowledge. Biometric data was collected that could be used for surveillance.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Pay attention to what data apps collect, especially biometric data and clipboard access. "We may collect" often means "we definitely collect." Consider whether an app really needs access to your camera, microphone, location, and contacts. Review app permissions regularly.</p>
+                    </div>
+                `
+            },
+            'venmo-privacy': {
+                icon: '💸',
+                title: "Venmo's Default Public Transactions",
+                severity: 'medium',
+                date: '2015-Present',
+                affected: 'Millions exposed',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>Venmo's default privacy setting made all transactions public, creating a searchable database of people's financial activities. Researchers, journalists, and stalkers used this to track individuals' locations, relationships, and spending habits.</p>
+                    
+                    <h3>The Problematic Design</h3>
+                    <ul>
+                        <li>Transactions were public by default (opt-out, not opt-in)</li>
+                        <li>Privacy settings were buried and confusing</li>
+                        <li>Transaction descriptions revealed sensitive information</li>
+                        <li>Public API allowed mass data scraping</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>Researchers created projects showing they could track drug dealers, identify people's romantic partners, determine when people were home or away, and build detailed profiles of spending habits. Stalkers used the data to track victims. The FTC fined Venmo for privacy violations.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Always check default privacy settings immediately after signing up. "Public by default" is a dark pattern that exposes your data. Even innocuous transaction descriptions can reveal sensitive information about your life, habits, and relationships. Make transactions private and review what you share.</p>
+                    </div>
+                `
+            },
+            'ring-police': {
+                icon: '🔔',
+                title: 'Ring Doorbell Law Enforcement Partnerships',
+                severity: 'high',
+                date: '2019-2021',
+                affected: 'Thousands of users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>Ring (owned by Amazon) established partnerships with over 2,000 police departments, allowing law enforcement to request doorbell camera footage from users. The terms of service gave Ring broad rights to share user video data.</p>
+                    
+                    <h3>The Problematic Clauses</h3>
+                    <ul>
+                        <li>Ring could share video footage with law enforcement without warrants</li>
+                        <li>Users weren't always notified when police requested their videos</li>
+                        <li>Broad license granted to Ring to use, modify, and share user content</li>
+                        <li>Videos could be retained indefinitely</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>Police obtained footage of users and their neighbors without warrants. Communities of color were disproportionately surveilled. Ring employees were caught watching customer videos without authorization. The surveillance network created a warrantless mass surveillance system.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Smart home devices with cameras create permanent records that can be accessed by companies and law enforcement. Read the fine print about who can access your data and under what circumstances. Consider whether you're comfortable creating a surveillance network in your neighborhood.</p>
+                    </div>
+                `
+            },
+            'equifax-breach': {
+                icon: '🏦',
+                title: 'Equifax Breach & Liability Waiver',
+                severity: 'critical',
+                date: '2017',
+                affected: '147 million users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>Equifax suffered a massive data breach exposing Social Security numbers, birth dates, addresses, and credit card numbers of 147 million Americans. Their initial response required victims to waive their right to sue in order to receive free credit monitoring.</p>
+                    
+                    <h3>The Problematic Clauses</h3>
+                    <ul>
+                        <li>Liability waivers that limited Equifax's responsibility for breaches</li>
+                        <li>Mandatory arbitration clause (later removed after backlash)</li>
+                        <li>Users had no choice about whether their data was collected</li>
+                        <li>Inadequate security despite holding sensitive financial data</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>147 million people had their most sensitive personal information exposed, leading to identity theft and fraud. Victims initially had to choose between credit monitoring and their right to sue. The breach resulted from Equifax's failure to patch known security vulnerabilities. Settlement provided only $125-$425 per person.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>Liability limitation clauses protect companies, not you. Credit bureaus collect your data without your consent, then limit their responsibility when they fail to protect it. Always read what rights you're giving up, especially after a company's failure harms you. Freeze your credit to protect against identity theft.</p>
+                    </div>
+                `
+            },
+            'zoom-privacy': {
+                icon: '📹',
+                title: "Zoom's \"Attention Tracking\" & Data Sharing",
+                severity: 'high',
+                date: '2020',
+                affected: 'Millions of users',
+                content: `
+                    <h3>What Happened</h3>
+                    <p>During the pandemic, Zoom's explosive growth revealed problematic privacy practices: an "attention tracking" feature that monitored if users were focused on the Zoom window, sharing data with Facebook without disclosure, and misleading claims about end-to-end encryption.</p>
+                    
+                    <h3>The Problematic Clauses & Practices</h3>
+                    <ul>
+                        <li>Attention tracking allowed hosts to monitor if participants were paying attention</li>
+                        <li>iOS app sent data to Facebook even for users without Facebook accounts</li>
+                        <li>False claims about end-to-end encryption (meetings weren't actually encrypted)</li>
+                        <li>Broad rights to use meeting content for training AI</li>
+                        <li>"Zoombombing" incidents due to weak default security settings</li>
+                    </ul>
+
+                    <div class="impact-box">
+                        <strong>💥 Impact</strong>
+                        <p>Employers and teachers could monitor whether students/employees were paying attention, creating a surveillance culture. User data was shared with Facebook without consent. Private meetings were not actually private. Zoom faced multiple lawsuits and FTC investigation, settling for $85 million.</p>
+                    </div>
+
+                    <div class="lesson-learned">
+                        <strong>💡 Lesson Learned</strong>
+                        <p>"Free" services often monetize your data and behavior. Features like attention tracking turn communication tools into surveillance systems. Claims about security and encryption should be verified by independent experts, not just taken at face value. Read privacy policies before using video conferencing for sensitive conversations.</p>
+                    </div>
+                `
+            }
+        };
+
+        // Get case from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const caseId = urlParams.get('case');
+
+        if (caseId && cases[caseId]) {
+            const caseData = cases[caseId];
+            
+            // Update page content
+            document.getElementById('caseIcon').textContent = caseData.icon;
+            document.getElementById('caseTitle').textContent = caseData.title;
+            
+            // Update meta information
+            const metaHTML = `
+                <span class="severity ${caseData.severity}">${caseData.severity.charAt(0).toUpperCase() + caseData.severity.slice(1)}</span>
+                <span class="meta-item-large">📅 ${caseData.date}</span>
+                <span class="meta-item-large">👥 ${caseData.affected}</span>
+            `;
+            document.getElementById('caseMeta').innerHTML = metaHTML;
+            
+            // Update content
+            document.getElementById('caseContent').innerHTML = caseData.content;
+            
+            // Update page title
+            document.title = `${caseData.title} - ClauseCode AI`;
+        } else {
+            // Case not found
+            document.getElementById('caseIcon').textContent = '❌';
+            document.getElementById('caseTitle').textContent = 'Case Not Found';
+            document.getElementById('caseMeta').innerHTML = '';
+            document.getElementById('caseContent').innerHTML = '<p>The requested case study could not be found.</p>';
+        }
+    </script>
+</body>
+</html>

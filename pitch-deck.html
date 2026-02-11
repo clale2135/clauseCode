@@ -11,7 +11,7 @@
         <!-- Slide Navigation -->
         <div class="slide-nav">
             <button id="prevBtn" class="nav-btn">←</button>
-            <span id="slideCounter" class="slide-counter">1 / 8</span>
+            <span id="slideCounter" class="slide-counter">1 / 9</span>
             <button id="nextBtn" class="nav-btn">→</button>
         </div>
 
@@ -274,8 +274,37 @@
             <audio class="slide-audio" data-slide="7" src="/static/audio/slide_7.mp3" preload="auto"></audio>
         </div>
 
-        <!-- Slide 8: Next Steps -->
+        <!-- Slide 8: Reflection Questions -->
         <div class="slide" data-slide="8">
+            <div class="slide-content reflection-slide">
+                <h2 class="slide-title">Project Reflections</h2>
+                <div class="reflection-questions">
+                    <div class="reflection-item">
+                        <h3 class="reflection-question">❓ What specific online identity threat(s) does your AI tool address, and how is your approach different from existing solutions?</h3>
+                        <p class="reflection-answer">ClauseCode addresses online identity threats like hidden data sharing clauses, cross site tracking, forced arbitration, and unilateral policy changes that users blindly accept. Unlike most existing solutions that use generic AI answers, our system uses specialized agents as legal analysts, a translator, or even one that can appeal to a younger Gen Z audience. This approach produces a deeper and easier to understand analysis.</p>
+                    </div>
+                    
+                    <div class="reflection-item">
+                        <h3 class="reflection-question">💪 Describe a challenge you faced. How did you overcome it? How did you reach out for help?</h3>
+                        <p class="reflection-answer">A challenge we faced was transforming the issue of unread Terms and Conditions into a technology based solution. Our research showed that only 9% of adults actually read Terms and Conditions, and that even vulnerable groups, like low income users of earned wage apps, can face hidden fees with an annual percent rate of nearly 367%. After discussing it with our mentors we redesigned the web app to flag malicious clauses and provide a simplified, and even multilingual explanation.</p>
+                    </div>
+                    
+                    <div class="reflection-item">
+                        <h3 class="reflection-question">💡 What did you learn from this process that will impact the way you interact with technology in the future?</h3>
+                        <p class="reflection-answer">We learned that Terms and Conditions can contain malicious clauses that can affect privacy, data ownership, and legal rights. We also realized how easily information can be shared, as many platforms use an open source code and third party systems, which introduces even more security risks. After researching these effects, we learned to approach digital agreements more critically and determine how our data is collected, shared and protected before we blindly click accept.</p>
+                    </div>
+                    
+                    <div class="reflection-item">
+                        <h3 class="reflection-question">🎓 Describe how you used IBM SkillsBuild to support the development of your project.</h3>
+                        <p class="reflection-answer">We used IBM SkillsBuild to develop our AI agents, specifically through the building of an AI chatbot module. After learning about how AI chatbots are built, we did some more research and learned how to utilize an OpenAI API key to build an agent. We applied these skills and concepts we learned to ensure that our agents responsibly analyze Terms and Conditions, avoid generating inaccurate legal advice, and clearly explain risks to users.</p>
+                    </div>
+                </div>
+            </div>
+            <audio class="slide-audio" data-slide="8" src="/static/audio/slide_8.mp3" preload="auto"></audio>
+        </div>
+
+        <!-- Slide 9: Next Steps -->
+        <div class="slide" data-slide="9">
             <div class="slide-content">
                 <h2 class="slide-title">Next Steps</h2>
                 <div class="next-steps-horizontal">
@@ -315,7 +344,7 @@
                     </div>
                 </div>
             </div>
-            <audio class="slide-audio" data-slide="8" src="/static/audio/slide_8.mp3" preload="auto"></audio>
+            <audio class="slide-audio" data-slide="9" src="/static/audio/slide_9.mp3" preload="auto"></audio>
         </div>
 
         <!-- Progress Dots -->
@@ -328,6 +357,7 @@
             <span class="dot" data-slide="6"></span>
             <span class="dot" data-slide="7"></span>
             <span class="dot" data-slide="8"></span>
+            <span class="dot" data-slide="9"></span>
         </div>
     </div>
 

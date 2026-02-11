@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal Document Accessibility Statistics - ClauseCode AI</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .stats-page {
+    min-height: 100vh;
+    padding: 100px 20px 40px;
+  }
+
+  .stats-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .page-header h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-header p {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(96, 165, 250, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .stat-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .stat-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    line-height: 1.3;
+  }
+
+  .stat-card p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .source-link {
+    margin-top: 15px;
+  }
+
+  .source-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #60a5fa;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .source-link a:hover {
+    color: #a78bfa;
+    gap: 12px;
+  }
+
+  .back-link {
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .back-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .back-link a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  }
+
+  @media (max-width: 768px) {
+    .stats-page {
+      padding: 40px 15px 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .stat-card {
+      padding: 25px;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Desktop/iPad Navbar -->
+  <nav class="desktop-navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <button onclick="window.history.back()" class="navbar-back-btn" title="Go back">
+          <span>←</span>
+        </button>
+        <span class="navbar-logo">🔍</span>
+        <span class="navbar-title">ClauseCode AI</span>
+      </div>
+      <div class="navbar-links">
+        <a href="/" class="navbar-link">
+          <span class="navbar-icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="/terms.html" class="navbar-link">
+          <span class="navbar-icon">📜</span>
+          <span>Terms & Conditions</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="stats-page">
+    <div class="stats-container">
+      <div class="page-header">
+        <h1>📊 Key Statistics on Legal Document Accessibility</h1>
+        <p>Understanding the challenges consumers face with digital agreements and terms of service</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Signing Without Reading</h3>
+          <p>69% of consumers sign contracts without reading them; 63% later discover unexpected clauses.</p>
+          <div class="source-link"><a href="https://blog.adobe.com/en/publish/2025/02/04/top-5-takeaways-from-new-contracts-survey-most-people-sign-before-they-read" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Low Engagement with T&Cs</h3>
+          <p>Only 9% of adults read terms and conditions; among ages 18–34 the rate drops to around 3%.</p>
+          <div class="source-link"><a href="https://www.security.org/resources/digital-privacy-survey/" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Complex TOS</h3>
+          <p>Social-media terms often require college-level reading (grades 11–16), while most adults read at a 7th–8th-grade level.</p>
+          <div class="source-link"><a href="https://allaboutcookies.org/social-media-terms-of-service" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Contracts of Adhesion</h3>
+          <p>Standard-form contracts often require reading levels 6–8 grades above average, challenging meaningful consent.</p>
+          <div class="source-link"><a href="https://www.theregreview.org/2024/10/09/phillips-mandating-contract-comprehensibility/" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Dark Patterns</h3>
+          <p>76% of subscription sites employ at least one dark pattern, and 67% use multiple deceptive tactics.</p>
+          <div class="source-link"><a href="https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-announce-results-review-use-dark-patterns-subscriptions" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Hidden Costs</h3>
+          <p>Cash-advance apps lead to 56% more overdrafts and an average APR of 367%; 75% of borrowers reborrow within a day.</p>
+          <div class="source-link"><a href="https://www.responsiblelending.org/research-publication/not-free-large-hidden-costs-small-dollar-loans-made-through-cash-advance-apps" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Seniors & Scams</h3>
+          <p>Older adults lost $3.4 B to scams in 2023, with average losses near $34 K.</p>
+          <div class="source-link"><a href="https://www.ncoa.org/article/top-5-financial-scams-targeting-older-adults" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Credit Invisibility</h3>
+          <p>About 28 M Americans are credit-invisible, and alternative scoring models may discriminate based on online behavior.</p>
+          <div class="source-link"><a href="https://greenlining.org/blog/2025/fcra-and-find-out-how-online-lenders-use-alternative-credit-scores-to-prey-on-communities-of-color/" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Language Barriers</h3>
+          <p>26.5 M U.S. residents have limited English proficiency; language barriers hinder access to critical services.</p>
+          <div class="source-link"><a href="https://www.migrationpolicy.org/sites/default/files/publications/USCCR-Hofstetter-Testimony-March2025-FINAL.pdf" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>AI Hallucinations</h3>
+          <p>AI hallucinations caused 486 legal cases (324 in the U.S.), implicating 128 lawyers and 2 judges.</p>
+          <div class="source-link"><a href="https://cronkitenews.azpbs.org/2025/10/28/lawyers-ai-hallucinations-chatgpt/" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>AI Accuracy</h3>
+          <p>Claude 4 achieves about 94.8% accuracy in legal Q&A with 65% fewer hallucinations; GPT‑5 still has a 15–20% hallucination rate.</p>
+          <div class="source-link"><a href="https://www.counselpro.ai/blog/chatgpt-vs-claude-vs-gemini-for-lawyers-financial-review" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Invoice Review Efficiency</h3>
+          <p>Large-language models achieve up to 92% accuracy in invoice approval, surpassing human reviewers and cutting costs by 99.97%.</p>
+          <div class="source-link"><a href="https://arxiv.org/abs/2504.02881" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Reading Habits</h3>
+          <p>Only 9% of adults always read privacy policies and 32% never read terms of service; most people skim or ignore them.</p>
+          <div class="source-link"><a href="https://www.pewresearch.org/short-reads/2019/11/15/americans-and-privacy-concerned-confused-and-feeling-lack-of-control-over-their-personal-information/" target="_blank">Source →</a></div>
+        </div>
+
+        <div class="stat-card">
+          <h3>Digital Literacy Gains</h3>
+          <p>A training program improved digital skills for 72% of low-income seniors and boosted confidence for 78%.</p>
+          <div class="source-link"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10958066/" target="_blank">Source →</a></div>
+        </div>
+
+      <div class="back-link">
+        <a href="/">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

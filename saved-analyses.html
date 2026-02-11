@@ -14,9 +14,21 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             min-height: 100vh;
             padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        
+        * {
+            -webkit-overflow-scrolling: touch;
         }
 
         .container {
@@ -25,7 +37,7 @@
         }
 
         .header {
-            background: white;
+            background: #374151;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -33,7 +45,7 @@
         }
 
         h1 {
-            color: #667eea;
+            color: #60a5fa;
             margin-bottom: 10px;
         }
 
@@ -43,7 +55,7 @@
         }
 
         .filters {
-            background: white;
+            background: #374151;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -63,7 +75,7 @@
         .filter-group label {
             font-size: 12px;
             font-weight: 600;
-            color: #666;
+            color: #d1d5db;
         }
 
         .filter-group select,
@@ -78,24 +90,52 @@
         .filter-group select:focus,
         .filter-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #3b82f6;
         }
 
         button {
-            padding: 10px 20px;
-            background: #667eea;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            min-height: 44px;
+            min-width: 44px;
         }
 
         button:hover {
-            background: #5568d3;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
             transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .delete-btn {
+            padding: 8px 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .delete-btn:active {
+            transform: translateY(0);
         }
 
         .loading {
@@ -111,43 +151,75 @@
         }
 
         .analysis-card {
-            background: white;
+            background: #374151;
             border-radius: 12px;
-            padding: 25px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
+            overflow: hidden;
         }
 
         .analysis-card:hover {
-            transform: translateY(-4px);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .card-header {
+        .card-header-clickable {
             display: flex;
             justify-content: space-between;
-            align-items: start;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .card-header-clickable:hover {
+            background: #4b5563;
+        }
+
+        .card-toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .analysis-card.collapsed .card-toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .card-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 25px 25px 25px;
+        }
+
+        .analysis-card.collapsed .card-content {
+            max-height: 0;
+            padding: 0 25px;
         }
 
         .card-title {
             font-size: 18px;
             font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
+            color: #f3f4f6;
+            margin-bottom: 8px;
         }
 
         .card-url {
             font-size: 12px;
-            color: #667eea;
+            color: #60a5fa;
             text-decoration: none;
             word-break: break-all;
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #4b5563;
+            border-radius: 6px;
         }
 
         .card-url:hover {
             text-decoration: underline;
+            background: #6b7280;
         }
 
         .badges {
@@ -157,35 +229,36 @@
         }
 
         .badge {
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .badge-agent {
-            background: #667eea;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
         }
 
         .badge-type {
-            background: #f0f0f0;
-            color: #666;
+            background: #4b5563;
+            color: #d1d5db;
         }
 
         .card-meta {
             font-size: 12px;
-            color: #999;
-            margin-bottom: 15px;
+            color: #9ca3af;
+            margin-top: 5px;
         }
 
         .card-result {
             font-size: 14px;
             line-height: 1.6;
-            color: #555;
+            color: #d1d5db;
             padding: 15px;
-            background: #f9f9f9;
+            background: #4b5563;
             border-radius: 8px;
         }
         
@@ -199,7 +272,7 @@
             align-items: center;
             cursor: pointer;
             padding: 12px;
-            background: #667eea;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             border-radius: 6px;
             font-weight: 600;
@@ -207,7 +280,7 @@
         }
         
         .section-header:hover {
-            background: #5568d3;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
         }
         
         .section-header .toggle-icon {
@@ -223,8 +296,8 @@
             max-height: 400px;
             overflow-y: auto;
             padding: 15px;
-            background: white;
-            border: 2px solid #f0f0f0;
+            background: #1f2937;
+            border: 2px solid #4b5563;
             border-top: none;
             border-radius: 0 0 6px 6px;
             white-space: pre-wrap;
@@ -237,7 +310,7 @@
         .view-full-btn {
             margin-top: 10px;
             padding: 8px 16px;
-            background: #667eea;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             border: none;
             border-radius: 6px;
@@ -248,12 +321,12 @@
         }
         
         .view-full-btn:hover {
-            background: #5568d3;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
             transform: translateY(-2px);
         }
 
         .empty-state {
-            background: white;
+            background: #374151;
             padding: 60px;
             border-radius: 12px;
             text-align: center;
@@ -261,12 +334,12 @@
         }
 
         .empty-state h2 {
-            color: #667eea;
+            color: #60a5fa;
             margin-bottom: 10px;
         }
 
         .empty-state p {
-            color: #666;
+            color: #d1d5db;
         }
 
         .error {
@@ -277,29 +350,139 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .filters {
+                padding: 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+                min-width: auto;
+                padding: 12px;
+                font-size: 16px;
+            }
+            
+            button {
+                width: 100%;
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+            
+            .analysis-card {
+                padding: 20px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .badges {
+                justify-content: flex-start;
+            }
+            
+            .section-header {
+                padding: 14px;
+                font-size: 15px;
+            }
+            
+            .section-content {
+                padding: 16px;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .header {
+                padding: 16px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 13px;
+            }
+            
+            .filters {
+                padding: 12px;
+            }
+            
+            .filter-group label {
+                font-size: 13px;
+            }
+            
+            .analysis-card {
+                padding: 16px;
+            }
+            
+            .card-title {
+                font-size: 16px;
+            }
+            
+            .card-url {
+                font-size: 11px;
+            }
+            
+            .badge {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            
+            .section-header {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <div>
-                    <h1>📊 Saved Analyses</h1>
-                    <p class="subtitle">View and filter your ClauseCode AI analysis history</p>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <a href="/" style="color: #667eea; text-decoration: none; font-weight: 600;">🏠 Home</a>
-                    <a href="/pitch-deck.html" style="color: #667eea; text-decoration: none; font-weight: 600;" target="_blank">📊 Pitch Deck</a>
-                    <a href="/PITCH_NARRATION.md" style="color: #667eea; text-decoration: none; font-weight: 600;" target="_blank">🎤 Narration</a>
-                    <div id="userInfo" class="user-info-compact" style="display: none;">
-                        <img id="userPhoto" style="width: 32px; height: 32px; border-radius: 50%;" alt="User">
-                        <span id="userName" style="font-size: 14px; font-weight: 600;"></span>
-                        <button id="logoutBtn" style="padding: 6px 12px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Logout</button>
-                    </div>
-                    <button id="loginBtn" style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
-                        Sign in with Google
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button onclick="window.history.back()" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border: none; border-radius: 8px; font-size: 1.3rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)';" onmouseout="this.style.transform=''; this.style.boxShadow='';" title="Go back">
+                        ←
                     </button>
+                    <div>
+                        <h1>📊 Saved Analyses</h1>
+                        <p class="subtitle">View and filter your ClauseCode AI analysis history</p>
+                    </div>
                 </div>
+                <div id="userInfo" class="user-info-compact" style="display: none; align-items: center; gap: 10px;">
+                    <span id="userName" style="font-size: 14px; font-weight: 600;"></span>
+                    <button id="logoutBtn" style="padding: 6px 12px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Logout</button>
+                </div>
+                <button id="loginBtn" style="padding: 8px 16px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                    Sign in with Google
+                </button>
             </div>
         </div>
 
@@ -395,50 +578,65 @@
 
         function createAnalysisCard(analysis) {
             const card = document.createElement('div');
-            card.className = 'analysis-card';
+            card.className = 'analysis-card collapsed';
 
             const timestamp = new Date(analysis.timestamp).toLocaleString();
             const hasContent = analysis.page_content && analysis.page_content.trim().length > 0;
 
             card.innerHTML = `
-                <div class="card-header">
-                    <div>
+                <div class="card-header-clickable" onclick="toggleCard(this)">
+                    <div style="flex: 1;">
                         <div class="card-title">${escapeHtml(analysis.page_title)}</div>
-                        <a href="${escapeHtml(analysis.page_url)}" target="_blank" class="card-url">
-                            ${escapeHtml(analysis.page_url)}
-                        </a>
-                    </div>
-                    <div class="badges">
-                        <span class="badge badge-agent">${escapeHtml(analysis.agent)}</span>
-                        <span class="badge badge-type">${escapeHtml(analysis.analysis_type)}</span>
-                    </div>
-                </div>
-                <div class="card-meta">
-                    📅 ${timestamp}
-                    ${analysis.id ? `<br>🔖 ID: ${analysis.id}` : ''}
-                </div>
-                <div class="card-result">
-                    ${hasContent ? `
-                    <div class="card-section">
-                        <div class="section-header collapsed" onclick="toggleSection(this)">
-                            <span>📄 Original Contract/Document</span>
-                            <span class="toggle-icon">▼</span>
+                        <div class="card-meta">
+                            📅 ${timestamp}
+                            ${analysis.id ? ` • 🔖 ID: ${analysis.id}` : ''}
                         </div>
-                        <div class="section-content collapsed">${escapeHtml(analysis.page_content)}</div>
                     </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="badges">
+                            <span class="badge badge-agent">${escapeHtml(analysis.agent)}</span>
+                            <span class="badge badge-type">${escapeHtml(analysis.analysis_type)}</span>
+                        </div>
+                        <span class="card-toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <a href="${escapeHtml(analysis.page_url)}" target="_blank" class="card-url" onclick="event.stopPropagation()">
+                        ${escapeHtml(analysis.page_url)}
+                    </a>
+                    <div class="card-result">
+                        ${hasContent ? `
+                        <div class="card-section">
+                            <div class="section-header collapsed" onclick="event.stopPropagation(); toggleSection(this)">
+                                <span>📄 Original Contract/Document</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="section-content collapsed">${escapeHtml(analysis.page_content)}</div>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="card-section">
+                            <div class="section-header collapsed" onclick="event.stopPropagation(); toggleSection(this)">
+                                <span>🔍 Analysis Result</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                            <div class="section-content collapsed">${analysis.result_text}</div>
+                        </div>
+                    </div>
+                    ${analysis.id ? `
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteAnalysis('${analysis.id}', this)">
+                        🗑️ Delete Analysis
+                    </button>
                     ` : ''}
-                    
-                    <div class="card-section">
-                        <div class="section-header" onclick="toggleSection(this)">
-                            <span>🔍 Analysis Result</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="section-content">${analysis.result_text}</div>
-                    </div>
                 </div>
             `;
 
             return card;
+        }
+        
+        function toggleCard(header) {
+            const card = header.closest('.analysis-card');
+            card.classList.toggle('collapsed');
         }
         
         function toggleSection(header) {
@@ -452,6 +650,59 @@
             div.textContent = text;
             return div.innerHTML;
         }
+        
+        async function deleteAnalysis(docId, buttonElement) {
+            if (!confirm('Are you sure you want to delete this analysis? This action cannot be undone.')) {
+                return;
+            }
+            
+            const originalText = buttonElement.innerHTML;
+            buttonElement.innerHTML = '⏳ Deleting...';
+            buttonElement.disabled = true;
+            
+            try {
+                const response = await fetch(`/analyses/${docId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status !== 'ok') {
+                    throw new Error(data.message || 'Failed to delete analysis');
+                }
+                
+                // Remove the card from the UI
+                const card = buttonElement.closest('.analysis-card');
+                card.style.transition = 'opacity 0.3s, transform 0.3s';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    card.remove();
+                    
+                    // Check if there are any cards left
+                    const grid = document.querySelector('.analyses-grid');
+                    if (grid && grid.children.length === 0) {
+                        document.getElementById('content').innerHTML = `
+                            <div class="empty-state">
+                                <h2>No analyses found</h2>
+                                <p>No saved analyses match your current filters.</p>
+                            </div>
+                        `;
+                    }
+                }, 300);
+                
+            } catch (error) {
+                alert('Error deleting analysis: ' + error.message);
+                buttonElement.innerHTML = originalText;
+                buttonElement.disabled = false;
+            }
+        }
+
+        // Add event listeners to filters
+        document.getElementById('agentFilter').addEventListener('change', loadAnalyses);
+        document.getElementById('typeFilter').addEventListener('change', loadAnalyses);
+        document.getElementById('limitFilter').addEventListener('change', loadAnalyses);
 
         // Load analyses on page load
         loadAnalyses();

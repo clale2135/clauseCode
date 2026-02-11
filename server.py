@@ -221,10 +221,40 @@ async def get_analysis(request, doc_id: str):
             'message': str(e)
         }, status=500)
 
+@app.route('/analyses/<doc_id>', methods=['DELETE'])
+async def delete_analysis(request, doc_id: str):
+    """Delete a single analysis by document ID"""
+    try:
+        db = await get_db()
+        if not db or not db.initialized:
+            return json_response({
+                'status': 'error',
+                'message': 'Firestore not available'
+            }, status=503)
+        
+        success = await db.delete_analysis(doc_id)
+        
+        if not success:
+            return json_response({
+                'status': 'error',
+                'message': 'Failed to delete analysis'
+            }, status=500)
+        
+        return json_response({
+            'status': 'ok',
+            'message': 'Analysis deleted successfully'
+        }, status=200)
+    
+    except Exception as e:
+        return json_response({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
+
 @app.route('/', methods=['GET'])
 async def home(request):
     try:
-        async with aiofiles.open('index.html', 'r', encoding='utf-8') as f:
+        async with aiofiles.open('landing.html', 'r', encoding='utf-8') as f:
             content = await f.read()
         return html(content)
     except FileNotFoundError:
@@ -242,6 +272,25 @@ async def home(request):
                 'upload': 'POST /upload'
             }
         }, status=200)
+
+@app.route('/app.html', methods=['GET'])
+async def app_page(request):
+    """Serve the main app"""
+    try:
+        async with aiofiles.open('index.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'App not found'}, status=404)
+
+@app.route('/presentation.html', methods=['GET'])
+async def presentation(request):
+    try:
+        async with aiofiles.open('presentation.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Presentation not found'}, status=404)
 
 @app.route('/pitch-deck.html', methods=['GET'])
 async def pitch_deck(request):
@@ -278,6 +327,54 @@ async def terms_page(request):
         return html(content)
     except FileNotFoundError:
         return json_response({'error': 'Terms and conditions page not found'}, status=404)
+
+@app.route('/landing.html', methods=['GET'])
+async def landing_page(request):
+    """Serve the landing page"""
+    try:
+        async with aiofiles.open('landing.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Landing page not found'}, status=404)
+
+@app.route('/accessibility-stats.html', methods=['GET'])
+async def accessibility_stats_page(request):
+    """Serve the accessibility statistics page"""
+    try:
+        async with aiofiles.open('accessibility-stats.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Accessibility stats page not found'}, status=404)
+
+@app.route('/case-studies.html', methods=['GET'])
+async def case_studies_page(request):
+    """Serve the case studies page"""
+    try:
+        async with aiofiles.open('case-studies.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Case studies page not found'}, status=404)
+
+@app.route('/case-detail.html', methods=['GET'])
+async def case_detail_page(request):
+    """Serve the case detail page"""
+    try:
+        async with aiofiles.open('case-detail.html', 'r', encoding='utf-8') as f:
+            content = await f.read()
+        return html(content)
+    except FileNotFoundError:
+        return json_response({'error': 'Case detail page not found'}, status=404)
+
+@app.route('/gwc.pdf', methods=['GET'])
+async def gwc_pdf(request):
+    """Serve the GWC research PDF"""
+    try:
+        return await file('gwc.pdf')
+    except FileNotFoundError:
+        return json_response({'error': 'PDF not found'}, status=404)
 
 # Google OAuth endpoints
 @app.route('/auth/google', methods=['POST'])
@@ -414,7 +511,7 @@ async def ask_question(request):
                     'Authorization': f'Bearer {OPENAI_API_KEY}'
                 },
                 json={
-                    'model': 'gpt-4o-mini',
+                    'model': 'gpt-5.1-chat-latest',
                     'messages': messages
                 }
             )
@@ -675,7 +772,7 @@ async def analyze(request):
                     'Authorization': f'Bearer {OPENAI_API_KEY}'
                 },
                 json={
-                    'model': 'gpt-4o-mini',
+                    'model': 'gpt-5.1-chat-latest',
                     'messages': [
                         {'role': 'system', 'content': system_prompt},
                         {'role': 'user', 'content': f'PAGE CONTENT:\n{page_text}\n\nAnalyze this page content according to your role and provide your insights.'}

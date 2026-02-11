@@ -8,6 +8,73 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <!-- Desktop/iPad Navbar -->
+    <nav class="desktop-navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <button onclick="window.history.back()" class="navbar-back-btn" title="Go back">
+                    <span>←</span>
+                </button>
+                <span class="navbar-logo">🔍</span>
+                <span class="navbar-title">ClauseCode AI</span>
+            </div>
+            <div class="navbar-links">
+                <div class="navbar-dropdown">
+                    <button class="navbar-link dropdown-toggle">
+                        <span class="navbar-icon">ℹ️</span>
+                        <span>Info</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/presentation.html" class="dropdown-item" target="_blank">
+                            <span class="navbar-icon">🎬</span>
+                            <span>Presentation</span>
+                        </a>
+                        <a href="/pitch-deck.html" class="dropdown-item" target="_blank">
+                            <span class="navbar-icon">📊</span>
+                            <span>Pitch Deck</span>
+                        </a>
+                        <a href="/gwc.pdf" class="dropdown-item" target="_blank">
+                            <span class="navbar-icon">📄</span>
+                            <span>GWC PDF</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-dropdown">
+                    <button class="navbar-link dropdown-toggle">
+                        <span class="navbar-icon">📚</span>
+                        <span>Research</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/accessibility-stats.html" class="dropdown-item">
+                            <span class="navbar-icon">📊</span>
+                            <span>Statistics</span>
+                        </a>
+                        <a href="/case-studies.html" class="dropdown-item">
+                            <span class="navbar-icon">📖</span>
+                            <span>Case Studies</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="/terms.html" class="navbar-link">
+                    <span class="navbar-icon">📜</span>
+                    <span>Terms & Conditions</span>
+                </a>
+            </div>
+            <div class="navbar-auth">
+                <div id="userInfo" class="user-info" style="display: none;">
+                    <span id="userName" class="user-name"></span>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                </div>
+                <button id="loginBtn" class="btn-login">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width: 18px; height: 18px; margin-right: 8px;">
+                    Sign in with Google
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <div class="header-content">
@@ -16,21 +83,53 @@
                     <p class="subtitle">Analyze Terms & Conditions with AI-Powered Agents</p>
                 </div>
                 <div class="header-right">
-                    <div id="userInfo" class="user-info" style="display: none;">
-                        <img id="userPhoto" class="user-photo" alt="User">
-                        <span id="userName" class="user-name"></span>
-                        <button id="logoutBtn" class="btn-logout">Logout</button>
+                    <div id="userInfoMobileHeader" class="user-info" style="display: none;">
+                        <span id="userNameMobileHeader" class="user-name"></span>
+                        <button id="logoutBtnMobileHeader" class="btn-logout">Logout</button>
                     </div>
-                    <button id="loginBtn" class="btn-login">
+                    <button id="loginBtnMobileHeader" class="btn-login">
                         <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width: 18px; height: 18px; margin-right: 8px;">
                         Sign in with Google
                     </button>
                 </div>
             </div>
-            <div class="header-links">
-                <a href="/pitch-deck.html" class="header-link" target="_blank">📊 View Pitch Deck</a>
-                <a href="/PITCH_NARRATION.md" class="header-link" target="_blank">🎤 Pitch Narration</a>
-                <a href="/saved-analyses.html" class="header-link">💾 My Saved Analyses</a>
+            <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <button class="hamburger-avatar" id="hamburgerAvatar" style="display: none;" aria-label="Toggle menu">
+                <img id="hamburgerAvatarPhoto" alt="User" class="hamburger-avatar-img">
+            </button>
+            <div class="header-links" id="headerLinks">
+                <div class="mobile-auth">
+                    <div id="mobileUserInfo" class="mobile-user-info" style="display: none;">
+                        <img id="mobileUserPhoto" class="mobile-user-photo" alt="User">
+                        <span id="mobileUserName" class="mobile-user-name"></span>
+                        <button id="mobileLogoutBtn" class="mobile-btn-logout">Logout</button>
+                    </div>
+                    <button id="mobileLoginBtn" class="mobile-btn-login">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="width: 18px; height: 18px; margin-right: 8px;">
+                        Sign in with Google
+                    </button>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="mobile-dropdown">
+                    <button class="header-link dropdown-toggle-mobile">ℹ️ Info <span class="dropdown-arrow-mobile">▼</span></button>
+                    <div class="mobile-dropdown-menu">
+                        <a href="/presentation.html" class="header-link-sub" target="_blank">🎬 Presentation</a>
+                        <a href="/pitch-deck.html" class="header-link-sub" target="_blank">📊 Pitch Deck</a>
+                        <a href="/PITCH_NARRATION.md" class="header-link-sub" target="_blank">🎤 Pitch Narration</a>
+                        <a href="/gwc.pdf" class="header-link-sub" target="_blank">📄 GWC PDF</a>
+                    </div>
+                </div>
+                <div class="mobile-dropdown">
+                    <button class="header-link dropdown-toggle-mobile">📚 Research <span class="dropdown-arrow-mobile">▼</span></button>
+                    <div class="mobile-dropdown-menu">
+                        <a href="/accessibility-stats.html" class="header-link-sub">📊 Statistics</a>
+                        <a href="/case-studies.html" class="header-link-sub">📖 Case Studies</a>
+                    </div>
+                </div>
                 <a href="/terms.html" class="header-link">📜 Terms & Conditions</a>
             </div>
         </header>
@@ -55,66 +154,78 @@
             </div>
 
             <!-- Card 1: Document Upload -->
-            <div class="wizard-card active" id="card-1">
-                <div class="card-header">
-                    <h2>📄 Upload Document</h2>
-                    <p class="card-subtitle">Choose your preferred input method</p>
+            <div class="wizard-section active" id="card-1">
+                <!-- Method Selection as Separate Cards -->
+                <div class="method-selection-four">
+                    <div class="method-card" data-method="file">
+                        <span class="method-icon">📁</span>
+                        <h4>Upload File</h4>
+                        <p>PDF or Word document</p>
+                    </div>
+                    <div class="method-card" data-method="url">
+                        <span class="method-icon">🌐</span>
+                        <h4>Fetch from URL</h4>
+                        <p>Scrape web content</p>
+                    </div>
+                    <div class="method-card" data-method="text">
+                        <span class="method-icon">📝</span>
+                        <h4>Paste Text</h4>
+                        <p>Copy and paste directly</p>
+                    </div>
+                    <a href="/saved-analyses.html" class="method-card method-card-link">
+                        <span class="method-icon">💾</span>
+                        <h4>My Analyses</h4>
+                        <p>View saved analyses</p>
+                    </a>
                 </div>
-                <div class="card-body">
-                    <!-- Method Selection -->
-                    <div class="method-selection">
-                        <button class="method-btn" data-method="file">
-                            <span class="method-icon">📁</span>
-                            <h4>Upload File</h4>
-                            <p>PDF or Word document</p>
-                        </button>
-                        <button class="method-btn" data-method="url">
-                            <span class="method-icon">🌐</span>
-                            <h4>Fetch from URL</h4>
-                            <p>Scrape web content</p>
-                        </button>
-                        <button class="method-btn" data-method="text">
-                            <span class="method-icon">📝</span>
-                            <h4>Paste Text</h4>
-                            <p>Copy and paste directly</p>
-                        </button>
-                    </div>
 
-                    <!-- File Upload Input -->
-                    <div class="input-container" id="fileInputContainer" style="display: none;">
-                        <label for="fileUpload" class="file-upload-area">
-                            <span class="upload-icon">📁</span>
-                            <span class="upload-text">Click or drag to upload</span>
-                            <span class="upload-hint">Supports PDF and Word documents</span>
-                            <input type="file" id="fileUpload" accept=".pdf,.doc,.docx" hidden>
-                        </label>
-                    </div>
+                <!-- File Upload Input -->
+                <div class="input-container-standalone" id="fileInputContainer" style="display: none;">
+                    <label for="fileUpload" class="file-upload-area">
+                        <span class="upload-icon">📁</span>
+                        <span class="upload-text">Click or drag to upload</span>
+                        <span class="upload-hint">Supports PDF and Word documents</span>
+                        <input type="file" id="fileUpload" accept=".pdf,.doc,.docx" hidden>
+                    </label>
+                </div>
 
-                    <!-- URL Input -->
-                    <div class="input-container" id="urlInputContainer" style="display: none;">
-                        <div class="url-input-container">
-                            <input 
-                                type="text" 
-                                id="urlInput" 
-                                placeholder="https://example.com/terms-and-conditions"
-                                class="url-input"
-                            >
-                            <button id="scrapeUrlBtn" class="btn btn-secondary">Fetch</button>
+                <!-- URL Input -->
+                <div class="input-container-standalone" id="urlInputContainer" style="display: none;">
+                    <div class="url-input-container">
+                        <input 
+                            type="text" 
+                            id="urlInput" 
+                            placeholder="https://example.com/terms-and-conditions"
+                            class="url-input"
+                        >
+                        <button id="scrapeUrlBtn" class="btn btn-secondary">Fetch</button>
+                    </div>
+                    <div class="sample-urls">
+                        <small style="color: #888; display: block; margin-bottom: 8px;">Sample URLs:</small>
+                        <div class="sample-url-list">
+                            <button class="sample-url-btn" data-url="https://policies.google.com/terms">Google Terms</button>
+                            <button class="sample-url-btn" data-url="https://www.microsoft.com/en/servicesagreement">Microsoft Terms</button>
+                            <button class="sample-url-btn" data-url="https://www.apple.com/legal/internet-services/terms/site.html">Apple Terms</button>
+                            <button class="sample-url-btn" data-url="https://www.dropbox.com/terms">Dropbox Terms</button>
                         </div>
                     </div>
-
-                    <!-- Text Input -->
-                    <div class="input-container" id="textInputContainer" style="display: none;">
-                        <textarea 
-                            id="textInput" 
-                            placeholder="Paste your document text here..."
-                            rows="10"
-                        ></textarea>
+                    <div class="legal-disclaimer">
+                        <small><strong>Legal Notice:</strong> Content scraping is performed in compliance with applicable laws and website terms of service. By using this feature, you confirm that you have the right to access and use the content from the provided URL. This tool is intended for legitimate purposes only, such as analyzing publicly accessible content. Users are responsible for ensuring their use complies with all applicable laws, regulations, and website policies.</small>
                     </div>
-
-                    <div id="uploadStatus" class="status-message"></div>
                 </div>
-                <div class="card-footer">
+
+                <!-- Text Input -->
+                <div class="input-container-standalone" id="textInputContainer" style="display: none;">
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Paste your document text here..."
+                        rows="10"
+                    ></textarea>
+                </div>
+
+                <div id="uploadStatus" class="status-message"></div>
+                
+                <div class="action-footer">
                     <button id="nextToAgent" class="btn btn-primary">Next: Choose Agent →</button>
                 </div>
             </div>
@@ -158,6 +269,35 @@
                     </div>
 
                     <div class="selection-group">
+                        <h3>🌍 Response Language</h3>
+                        <div class="language-selector">
+                            <select id="languageSelect" class="language-select">
+                                <option value="English">English</option>
+                                <option value="Spanish">Español (Spanish)</option>
+                                <option value="French">Français (French)</option>
+                                <option value="German">Deutsch (German)</option>
+                                <option value="Italian">Italiano (Italian)</option>
+                                <option value="Portuguese">Português (Portuguese)</option>
+                                <option value="Chinese">中文 (Chinese)</option>
+                                <option value="Japanese">日本語 (Japanese)</option>
+                                <option value="Korean">한국어 (Korean)</option>
+                                <option value="Arabic">العربية (Arabic)</option>
+                                <option value="Russian">Русский (Russian)</option>
+                                <option value="Hindi">हिन्दी (Hindi)</option>
+                                <option value="Dutch">Nederlands (Dutch)</option>
+                                <option value="Polish">Polski (Polish)</option>
+                                <option value="Turkish">Türkçe (Turkish)</option>
+                                <option value="Vietnamese">Tiếng Việt (Vietnamese)</option>
+                                <option value="Thai">ไทย (Thai)</option>
+                                <option value="Swedish">Svenska (Swedish)</option>
+                                <option value="Norwegian">Norsk (Norwegian)</option>
+                                <option value="Danish">Dansk (Danish)</option>
+                            </select>
+                            <p class="language-hint">The agent will respond in your selected language</p>
+                        </div>
+                    </div>
+
+                    <div class="selection-group">
                         <h3>Analysis Type</h3>
                         <div class="analysis-grid">
                             <button class="analysis-card" data-type="malicious">
@@ -184,6 +324,11 @@
                                 <span class="analysis-icon">🔄</span>
                                 <h4>Alternatives</h4>
                                 <p>Better options</p>
+                            </button>
+                            <button class="analysis-card" data-type="comprehensive">
+                                <span class="analysis-icon">🎯</span>
+                                <h4>Comprehensive</h4>
+                                <p>All perspectives</p>
                             </button>
                             <button class="analysis-card" data-type="custom">
                                 <span class="analysis-icon">✏️</span>
@@ -261,7 +406,130 @@
         </div>
     </div>
 
+    <!-- Mobile Upload Modals -->
+    <!-- File Upload Modal -->
+    <div id="fileUploadModal" class="upload-modal">
+        <div class="upload-modal-content">
+            <div class="upload-modal-header">
+                <div class="upload-modal-title">
+                    <span>📁</span>
+                    <span>Upload File</span>
+                </div>
+                <button class="upload-modal-close" data-modal="fileUploadModal">×</button>
+            </div>
+            <div class="upload-modal-body">
+                <label for="fileUploadMobile" class="file-upload-area">
+                    <span class="upload-icon">📁</span>
+                    <span class="upload-text">Click to upload</span>
+                    <span class="upload-hint">Supports PDF and Word documents</span>
+                    <input type="file" id="fileUploadMobile" accept=".pdf,.doc,.docx" hidden>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- URL Fetch Modal -->
+    <div id="urlFetchModal" class="upload-modal">
+        <div class="upload-modal-content">
+            <div class="upload-modal-header">
+                <div class="upload-modal-title">
+                    <span>🌐</span>
+                    <span>Fetch from URL</span>
+                </div>
+                <button class="upload-modal-close" data-modal="urlFetchModal">×</button>
+            </div>
+            <div class="upload-modal-body">
+                <div class="url-input-container">
+                    <input 
+                        type="text" 
+                        id="urlInputMobile" 
+                        placeholder="https://example.com/terms-and-conditions"
+                        class="url-input"
+                    >
+                    <button id="scrapeUrlBtnMobile" class="btn btn-secondary">Fetch</button>
+                </div>
+                <div class="sample-urls">
+                    <small style="color: #888; display: block; margin-bottom: 8px;">Sample URLs:</small>
+                    <div class="sample-url-list">
+                        <button class="sample-url-btn" data-url="https://policies.google.com/terms">Google Terms</button>
+                        <button class="sample-url-btn" data-url="https://www.microsoft.com/en/servicesagreement">Microsoft Terms</button>
+                        <button class="sample-url-btn" data-url="https://www.apple.com/legal/internet-services/terms/site.html">Apple Terms</button>
+                        <button class="sample-url-btn" data-url="https://www.dropbox.com/terms">Dropbox Terms</button>
+                    </div>
+                </div>
+                <div class="legal-disclaimer">
+                    <small><strong>Legal Notice:</strong> Content scraping is performed in compliance with applicable laws and website terms of service. By using this feature, you confirm that you have the right to access and use the content from the provided URL. This tool is intended for legitimate purposes only, such as analyzing publicly accessible content. Users are responsible for ensuring their use complies with all applicable laws, regulations, and website policies.</small>
+                </div>
+                <div id="uploadStatusMobile" class="status-message" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paste Text Modal -->
+    <div id="pasteTextModal" class="upload-modal">
+        <div class="upload-modal-content">
+            <div class="upload-modal-header">
+                <div class="upload-modal-title">
+                    <span>📝</span>
+                    <span>Paste Text</span>
+                </div>
+                <button class="upload-modal-close" data-modal="pasteTextModal">×</button>
+            </div>
+            <div class="upload-modal-body">
+                <textarea 
+                    id="textInputMobile" 
+                    placeholder="Paste your document text here..."
+                    rows="10"
+                ></textarea>
+            </div>
+            <div class="upload-modal-footer">
+                <button class="btn btn-secondary" data-modal="pasteTextModal">Cancel</button>
+                <button id="confirmPasteText" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+
     <script src="/static/auth.js"></script>
     <script type="module" src="/static/app.js"></script>
+    <script>
+        // Hamburger menu toggle
+        document.getElementById('hamburgerMenu').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('headerLinks').classList.toggle('active');
+        });
+        
+        // Hamburger avatar toggle (when logged in)
+        document.getElementById('hamburgerAvatar').addEventListener('click', function() {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const menu = document.getElementById('headerLinks');
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const hamburgerAvatar = document.getElementById('hamburgerAvatar');
+            const menu = document.getElementById('headerLinks');
+            if (!hamburger.contains(event.target) && 
+                !hamburgerAvatar.contains(event.target) && 
+                !menu.contains(event.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+        
+        // Mobile dropdown toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle-mobile');
+            if (dropdownToggle) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = this.closest('.mobile-dropdown');
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

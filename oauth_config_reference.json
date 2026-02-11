@@ -1,0 +1,16 @@
+{
+  "client_id": "761223278824-ijp6lq944kp1lapmcgubvh8pq65r67t3.apps.googleusercontent.com",
+  "project_id": "teachmemedical-prod",
+  "authorized_origins": [
+    "http://localhost:8000",
+    "http://localhost:5001",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:5001"
+  ],
+  "authorized_redirect_uris": [
+    "http://localhost:8000/auth/google/callback",
+    "http://localhost:5001/auth/google/callback",
+    "http://127.0.0.1:8000/auth/google/callback",
+    "http://127.0.0.1:5001/auth/google/callback"
+  ]
+}

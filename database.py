@@ -186,6 +186,21 @@ class AnalysisDB:
         except Exception as e:
             logger.error(f"Failed to list analyses: {e}")
             return []
+    
+    async def delete_analysis(self, doc_id: str) -> bool:
+        """Delete a single analysis by document ID"""
+        if not self.db:
+            return False
+        
+        try:
+            doc_ref = self.db.collection("clausecode_analyses").document(doc_id)
+            doc_ref.delete()
+            logger.info(f"✅ Deleted analysis from Firestore: {doc_id}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to delete analysis: {e}")
+            return False
 
 
 # Global database instance
