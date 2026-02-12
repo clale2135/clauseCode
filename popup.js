@@ -108,13 +108,15 @@ function displayAlternatives(alternatives) {
   
   section.style.display = "block";
 }
-async function callAI(pageText, systemPrompt) {
+async function callAI(pageText, systemPrompt, agent = null, analysisType = null) {
   const response = await fetch(`${SERVER_URL}/analyze`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       pageText,
-      systemPrompt
+      systemPrompt,
+      agent,
+      analysisType
     })
   });
 
@@ -124,7 +126,102 @@ async function callAI(pageText, systemPrompt) {
   }
 
   const data = await response.json();
-  return data.result;
+  
+  // Return structured data if available, otherwise fallback to plain text
+  if (data.structured) {
+    return {
+      html: renderStructuredAnalysis(data.structured),
+      raw: data.result,
+      structured: data.structured
+    };
+  }
+  
+  return {
+    html: data.result,
+    raw: data.result,
+    structured: null
+  };
+}
+
+function renderStructuredAnalysis(structured) {
+  let html = '';
+
+  // Severity badge
+  if (structured.severity) {
+    const severityClass = `severity-${structured.severity}`;
+    const severityIcon = getSeverityIcon(structured.severity);
+    html += `<div class="severity-badge ${severityClass}">${severityIcon} ${structured.severity.toUpperCase()}</div>`;
+  }
+
+  // Summary
+  if (structured.summary) {
+    html += `<div class="analysis-section"><h3>📋 Summary</h3><p>${structured.summary}</p></div>`;
+  }
+
+  // Key findings
+  if (structured.key_findings && structured.key_findings.length > 0) {
+    html += `<div class="analysis-section"><h3>🔍 Key Findings</h3><ul>`;
+    structured.key_findings.forEach(finding => {
+      html += `<li>${finding}</li>`;
+    });
+    html += `</ul></div>`;
+  }
+
+  // Sections
+  if (structured.sections && structured.sections.length > 0) {
+    structured.sections.forEach(section => {
+      const icon = getSectionIcon(section.type);
+      html += `<div class="analysis-section section-${section.type || 'info'}">`;
+      html += `<h4>${icon} ${section.title}</h4>`;
+      html += `<div>${section.content}</div>`;
+      html += `</div>`;
+    });
+  }
+
+  // Case examples
+  if (structured.case_examples && structured.case_examples.length > 0) {
+    html += `<div class="analysis-section"><h3>📋 Real-World Cases</h3>`;
+    structured.case_examples.forEach(caseEx => {
+      html += `<div class="case-example">`;
+      html += `<h5>${caseEx.title}</h5>`;
+      if (caseEx.company) html += `<p><strong>Company:</strong> ${caseEx.company}</p>`;
+      html += `<p>${caseEx.description}</p>`;
+      if (caseEx.outcome) html += `<p><strong>Outcome:</strong> ${caseEx.outcome}</p>`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Recommendations
+  if (structured.recommendations && structured.recommendations.length > 0) {
+    html += `<div class="analysis-section"><h3>💡 Recommendations</h3><ul>`;
+    structured.recommendations.forEach(rec => {
+      html += `<li>${rec}</li>`;
+    });
+    html += `</ul></div>`;
+  }
+
+  return html;
+}
+
+function getSeverityIcon(severity) {
+  const icons = {
+    'low': '✅',
+    'medium': '⚠️',
+    'high': '🔴',
+    'critical': '🚨'
+  };
+  return icons[severity] || 'ℹ️';
+}
+
+function getSectionIcon(type) {
+  const icons = {
+    'issue': '⚠️',
+    'concern': '⚡',
+    'positive': '✅',
+    'info': 'ℹ️'
+  };
+  return icons[type] || 'ℹ️';
 }
 
 function getAgentEmoji(agentName) {
@@ -194,32 +291,35 @@ async function analyzePage(selectedAgent, analysisType) {
       // For alternatives, get from SerpAPI and also use AI
       const serviceName = await extractServiceName(pageText, pageData.title, pageData.url);
       const [agentResponse, alternatives] = await Promise.allSettled([
-        callAI(pageText, systemPrompt),
+        callAI(pageText, systemPrompt, selectedAgent, analysisType),
         searchAlternatives(serviceName).catch(() => [])
       ]);
 
-      let responseText = agentResponse.status === 'fulfilled' 
+      let responseData = agentResponse.status === 'fulfilled' 
         ? agentResponse.value 
-        : `Oops! ${agentResponse.reason?.message || 'Something went wrong. Try again!'}`;
+        : { html: `Oops! ${agentResponse.reason?.message || 'Something went wrong. Try again!'}`, raw: '' };
 
+      let displayHtml = responseData.html;
+      
       if (alternatives.status === 'fulfilled' && alternatives.value.length > 0) {
-        responseText += "\n\n--- Alternative Services Found ---\n";
+        displayHtml += "<div class='analysis-section'><h3>🔍 Alternative Services Found</h3><ul>";
         alternatives.value.forEach((alt, idx) => {
-          responseText += `\n${idx + 1}. ${alt.title}\n   ${alt.snippet}\n   ${alt.link}\n`;
+          displayHtml += `<li><a href="${alt.link}" target="_blank">${alt.title}</a><br><small>${alt.snippet}</small></li>`;
         });
+        displayHtml += "</ul></div>";
       }
 
-      answerContentEl.innerText = responseText;
-      lastResultText = responseText;
+      answerContentEl.innerHTML = displayHtml;
+      lastResultText = responseData.raw;
       lastPageData = pageData;
       lastAgent = selectedAgent;
       lastAnalysisType = analysisType;
       // Hide the separate alternatives section since it's included in the response
       document.getElementById("alternativesSection").style.display = "none";
     } else {
-      const agentResponse = await callAI(pageText, systemPrompt);
-      answerContentEl.innerText = agentResponse;
-      lastResultText = agentResponse;
+      const responseData = await callAI(pageText, systemPrompt, selectedAgent, analysisType);
+      answerContentEl.innerHTML = responseData.html;
+      lastResultText = responseData.raw;
       lastPageData = pageData;
       lastAgent = selectedAgent;
       lastAnalysisType = analysisType;

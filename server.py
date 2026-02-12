@@ -764,7 +764,7 @@ def clean_text_content(text: str) -> str:
 
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
-    """Analyze page content using AI"""
+    """Analyze page content using AI - returns structured JSON"""
     try:
         print("=== /analyze endpoint called ===", flush=True)
         sys.stdout.flush()
@@ -781,12 +781,45 @@ async def analyze(request):
         data = request.json
         page_text = data.get('pageText', '')
         system_prompt = data.get('systemPrompt', '')
+        agent = data.get('agent', 'Unknown')
+        analysis_type = data.get('analysisType', 'general')
         
         # Clean the text content to avoid triggering guardrails
         page_text = clean_text_content(page_text)
         
         print(f"Request data received - page_text length: {len(page_text)}, system_prompt length: {len(system_prompt)}", flush=True)
         sys.stdout.flush()
+
+        # Enhanced system prompt for structured output
+        structured_prompt = system_prompt + """
+
+IMPORTANT: Structure your response as a JSON object with the following format:
+{
+  "summary": "Brief 2-3 sentence overview",
+  "severity": "low|medium|high|critical",
+  "sections": [
+    {
+      "title": "Section title",
+      "content": "Main content in plain text - NO HTML tags, formatting will be handled by the frontend",
+      "type": "issue|concern|positive|info",
+      "priority": "high|medium|low"
+    }
+  ],
+  "key_findings": ["Finding 1", "Finding 2"],
+  "recommendations": ["Recommendation 1", "Recommendation 2"],
+  "case_examples": [
+    {
+      "title": "Case title",
+      "description": "What happened",
+      "company": "Company name if applicable",
+      "outcome": "Result"
+    }
+  ]
+}
+
+CRITICAL: You MUST include real-world case examples in the "case_examples" array. For each significant issue, clause, or concern you identify, provide at least one real-life example where users experienced problems. Include specific company names, incidents, lawsuits, or documented cases. These examples should illustrate the real-world consequences of such terms.
+
+IMPORTANT: All content fields (summary, content, descriptions, etc.) should be PLAIN TEXT only. Do NOT use HTML tags like <strong>, <em>, <ul>, <li>, etc. The frontend will handle all formatting and styling. Just provide clear, well-written text content."""
 
         # Call OpenAI API asynchronously
         print("Calling OpenAI API...", flush=True)
@@ -802,9 +835,10 @@ async def analyze(request):
                 json={
                     'model': 'gpt-5.1-chat-latest',
                     'messages': [
-                        {'role': 'system', 'content': system_prompt},
-                        {'role': 'user', 'content': f'PAGE CONTENT:\n{page_text}\n\nAnalyze this page content according to your role and provide your insights.'}
-                    ]
+                        {'role': 'system', 'content': structured_prompt},
+                        {'role': 'user', 'content': f'PAGE CONTENT:\n{page_text}\n\nAnalyze this page content according to your role and provide your insights in the structured JSON format.'}
+                    ],
+                    'response_format': {'type': 'json_object'}
                 }
             )
 
@@ -822,7 +856,26 @@ async def analyze(request):
             return json_response({'error': error_message}, status=400)
 
         result = response.json()
-        return json_response({'result': result['choices'][0]['message']['content']}, status=200)
+        ai_content = result['choices'][0]['message']['content']
+        
+        # Parse the JSON response from AI
+        import json as json_lib
+        try:
+            structured_data = json_lib.loads(ai_content)
+            return json_response({
+                'result': ai_content,  # Keep raw for backward compatibility
+                'structured': structured_data,
+                'agent': agent,
+                'analysis_type': analysis_type
+            }, status=200)
+        except json_lib.JSONDecodeError:
+            # Fallback if AI doesn't return valid JSON
+            return json_response({
+                'result': ai_content,
+                'structured': None,
+                'agent': agent,
+                'analysis_type': analysis_type
+            }, status=200)
 
     except Exception as e:
         return json_response({'error': str(e)}, status=500)
