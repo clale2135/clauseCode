@@ -701,12 +701,48 @@ main {
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
         z-index: 10;
     }
+    
+    /* Mobile: Sticky top footer for card 3 */
+    #card-3 .card-footer {
+        position: sticky;
+        top: 0;
+        background: #1f2937;
+        margin: -40px -25px 20px -25px;
+        padding: 15px 25px;
+        border-top: none;
+        border-bottom: 2px solid #374151;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    #card-3 .card-footer .btn {
+        flex: 1;
+        min-width: 100px;
+        max-width: none;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
     #card-2 .card-footer {
         margin: 0 -20px -20px -20px;
         padding: 12px 20px 16px 20px;
+    }
+    
+    #card-3 .card-footer {
+        margin: -20px -20px 16px -20px;
+        padding: 12px 20px;
+        gap: 6px;
+    }
+    
+    #card-3 .card-footer .btn {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-width: 90px;
     }
 }
 
@@ -1947,13 +1983,13 @@ html {
     }
     
     .card-footer {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
     }
     
     .card-footer .btn {
-        max-width: 100%;
-        width: 100%;
+        flex: 1;
+        max-width: none;
     }
     
     .results-content {

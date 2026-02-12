@@ -19,11 +19,26 @@ function showSlide(n) {
     }
     
     slides[currentSlide].classList.add('active');
-    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
     
-    // Update button states
-    document.getElementById('prevBtn').disabled = currentSlide === 0;
-    document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    // Update desktop navigation
+    const slideCounter = document.getElementById('slideCounter');
+    if (slideCounter) {
+        slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+    }
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (prevBtn) prevBtn.disabled = currentSlide === 0;
+    if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
+    
+    // Update mobile navigation
+    const mobileLeftArrow = document.getElementById('mobileLeftArrow');
+    const mobileRightArrow = document.getElementById('mobileRightArrow');
+    const mobileSlideCounter = document.getElementById('mobileSlideCounter');
+    
+    if (mobileLeftArrow) mobileLeftArrow.disabled = currentSlide === 0;
+    if (mobileRightArrow) mobileRightArrow.disabled = currentSlide === totalSlides - 1;
+    if (mobileSlideCounter) mobileSlideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
 }
 
 function changeSlide(direction) {

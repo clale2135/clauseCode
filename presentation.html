@@ -8,10 +8,17 @@
 </head>
 <body>
     <!-- Home Button Overlay -->
-    <a href="/" style="position: fixed; top: 20px; left: 20px; z-index: 2000; background: rgba(59, 130, 246, 0.9); backdrop-filter: blur(10px); color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);" onmouseover="this.style.background='rgba(96, 165, 250, 0.95)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)';" onmouseout="this.style.background='rgba(59, 130, 246, 0.9)'; this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)';">
-        <span>🏠</span>
-        <span>Home</span>
+    <a href="/" class="home-button">
+        <span class="home-icon">🏠</span>
+        <span class="home-text">Home</span>
     </a>
+
+    <!-- Mobile Navigation Arrows -->
+    <button class="mobile-nav-arrow left" id="mobileLeftArrow" onclick="changeSlide(-1)">‹</button>
+    <button class="mobile-nav-arrow right" id="mobileRightArrow" onclick="changeSlide(1)">›</button>
+    
+    <!-- Mobile Slide Counter -->
+    <div class="mobile-slide-counter" id="mobileSlideCounter">1 / 14</div>
 
     <div class="presentation-container">
         <!-- Help Overlay -->
@@ -31,9 +38,10 @@
                 AI that reads the fine print — so you don't have to.<br>
                 Free, instant, for everyone.
             </div>
-            <div class="authors">Clare Lee • Adeline Lugo • Clare Conboy</div>
-            <div class="authors" style="font-size: 14px; margin-top: 5px;">
-                With guidance from Mrs. Healy, CS Teacher at Nardin Academy
+            <div class="authors" style="font-size: 18px; margin-top: 20px;">
+                <a href="http://clausecodeai-fkppyww5qa-uc.a.run.app" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600; border: 2px solid #60a5fa; padding: 12px 24px; border-radius: 8px; display: inline-block; transition: all 0.3s;">
+                    🌐 Visit ClauseCode AI
+                </a>
             </div>
             <div class="footer-text">FEBRUARY 2025 | Girls Who Code Challenge</div>
         </div>
@@ -540,9 +548,10 @@
                 We're building the tool that makes that statement true.
             </div>
             
-            <div class="authors" style="margin-top: 50px;">Clare Lee • Adeline Lugo • Clare Conboy</div>
-            <div class="authors" style="font-size: 14px; margin-top: 5px;">
-                With guidance from Mrs. Healy, CS Teacher at Nardin Academy
+            <div class="authors" style="margin-top: 50px; font-size: 18px;">
+                <a href="http://clausecodeai-fkppyww5qa-uc.a.run.app" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600; border: 2px solid #60a5fa; padding: 12px 24px; border-radius: 8px; display: inline-block; transition: all 0.3s;">
+                    🌐 Visit ClauseCode AI
+                </a>
             </div>
             <div class="footer-text">Girls Who Code Challenge | February 2025</div>
         </div>

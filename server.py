@@ -737,6 +737,31 @@ async def scrape_url(request):
             'error': f'An unexpected error occurred: {str(e)}. Please try copying and pasting the text manually instead.'
         }, status=500)
 
+def clean_text_content(text: str) -> str:
+    """Clean and normalize text content to avoid triggering AI guardrails"""
+    if not text:
+        return text
+    
+    # Remove excessive blank lines
+    text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
+    
+    # Remove excessive spaces
+    text = re.sub(r' {3,}', ' ', text)
+    
+    # Remove tabs
+    text = text.replace('\t', ' ')
+    
+    # Normalize line breaks
+    text = re.sub(r'\r\n', '\n', text)
+    
+    # Remove zero-width characters and other invisible Unicode
+    text = re.sub(r'[\u200b-\u200f\u202a-\u202e\ufeff]', '', text)
+    
+    # Strip leading/trailing whitespace
+    text = text.strip()
+    
+    return text
+
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
     """Analyze page content using AI"""
@@ -756,6 +781,9 @@ async def analyze(request):
         data = request.json
         page_text = data.get('pageText', '')
         system_prompt = data.get('systemPrompt', '')
+        
+        # Clean the text content to avoid triggering guardrails
+        page_text = clean_text_content(page_text)
         
         print(f"Request data received - page_text length: {len(page_text)}, system_prompt length: {len(system_prompt)}", flush=True)
         sys.stdout.flush()
